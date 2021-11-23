@@ -1,10 +1,26 @@
 # pet_project
 
 A new Flutter project.
+-Bengisu Özdemir
+
+-Sarp Bora Polat
+
+-Yağızalp Ekici
+
+-Esra Nur Özüm
+
+-Mustafa Ata Onbaş
 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
+
+23.11.21 -> Linking Git to Flutter. #1
+
+
+
+
+
 
 A few resources to get you started if this is your first Flutter project:
 
