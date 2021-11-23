@@ -1,10 +1,14 @@
 # pet_project
 
 A new Flutter project.
--Bengisu Özdemir "\n"
+-Bengisu Özdemir
+
 -Sarp Bora Polat
+
 -Yağızalp Ekici
+
 -Esra Nur Özüm
+
 -Mustafa Ata Onbaş
 
 ## Getting Started
@@ -18,10 +22,6 @@ This project is a starting point for a Flutter application.
 
 
 
-
-
-
-//////////////////////////////////////////////////////////////////////////////////
 A few resources to get you started if this is your first Flutter project:
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
