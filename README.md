@@ -1,7 +1,7 @@
 # pet_project
 
 A new Flutter project.
--Bengisu Özdemir
+-Bengisu Özdemir "\n"
 -Sarp Bora Polat
 -Yağızalp Ekici
 -Esra Nur Özüm
