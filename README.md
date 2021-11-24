@@ -17,6 +17,7 @@ A new Flutter project.
 This project is a starting point for a Flutter application.
 
 23.11.21 -> Linking Git to Flutter. #1
+24.11.21 -> First step: Walk Thorugh pages
 
 
 
