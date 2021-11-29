@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_project/utils/colors.dart';
 
-void main()
-{
-  runApp(MaterialApp(
-    home: WalkThrough(),
-  ));
-
-}
-
 class WalkThrough extends StatefulWidget {
 
   @override
@@ -159,9 +151,7 @@ class _WalkThroughState extends State<WalkThrough> {
             ],
           ),
         ),
-
       ),
-
     );
   }
 }
