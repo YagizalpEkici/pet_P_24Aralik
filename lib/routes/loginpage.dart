@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_project/utils/colors.dart';
+import 'package:pet_project/utils/dimensions.dart';
 
 class login extends StatefulWidget {
   @override
@@ -28,7 +30,7 @@ class _loginState extends State<login> {
   Widget build (BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: Dimen.RegularPadding,
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -41,9 +43,8 @@ class _loginState extends State<login> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: Dimen.RegularPadding,
                           child: CircleAvatar(
-                            backgroundColor: Colors.red,
                             child: ClipOval(
                               child:
                               Image.network('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
@@ -62,24 +63,34 @@ class _loginState extends State<login> {
                       flex: 1,
                       child: TextFormField(
                         decoration: InputDecoration(
-                          fillColor: Colors.grey,
+                          fillColor: AppColors.app_icons,
                           filled: true,
                           hintText: "Username",
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.black,
+                              color: AppColors.text_color,
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            borderRadius: Dimen.Border,
                           ),
                         ),
                         keyboardType: TextInputType.text,
 
+                        validator: (value) {
+                          if(value == null) {
+                            return 'Name field cannot be empty';
+                          } else {
+                            String trimmedValue = value.trim();
+                            if(trimmedValue.isEmpty) {
+                              return 'Name field cannot be empty';
+                            }
+                          }
+                          return null;
+                        },
                         onSaved: (value) {
                           if(value != null) {
                             name = value;
                           }
                         },
-
                       ),
                     ),
                   ],
@@ -92,17 +103,32 @@ class _loginState extends State<login> {
                       flex: 1,
                       child: TextFormField(
                         decoration: InputDecoration(
-                          fillColor: Colors.grey,
+                          fillColor: AppColors.app_icons,
                           filled: true,
                           hintText: "Password",
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.black,
+                              color: AppColors.text_color,
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
                         ),
                         keyboardType: TextInputType.text,
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
+
+                        validator: (value) {
+                          if(value == null) {
+                            return 'Password field cannot be empty';
+                          } else {
+                            String trimmedValue = value.trim();
+                            if(trimmedValue.isEmpty) {
+                              return 'Password field cannot be empty';
+                            }
+                          }
+                          return null;
+                        },
 
                         onSaved: (value) {
                           if(value != null) {
@@ -117,18 +143,18 @@ class _loginState extends State<login> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: Dimen.RegularPadding,
                       child: Text(
                         'Remember me',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w800,
-                          color: Colors.black,
+                          color: AppColors.text_color,
                         ),
                       ),
                     ),
                     Checkbox(
-                      checkColor: Colors.white,
+                      checkColor: AppColors.Background,
                       value: isChecked,
                       onChanged: (bool? value) {
                         setState(() {
@@ -171,24 +197,29 @@ class _loginState extends State<login> {
                                     (Set<MaterialState> states) {
                                   if (states.contains(MaterialState.pressed))
                                     return Theme.of(context).colorScheme.primary.withOpacity(0.5);
-                                  return Colors.blueGrey; // Use the component's default.
+                                  return AppColors.login_button_Color; // Use the component's default.
                                 },
                               ),
                             ),
-                            onPressed: buttonPressed,
+                            onPressed: () {
+                              if(_formKey.currentState!.validate()) {
+                                print('Name: '+name+"\nPass: "+pass);
+                                _formKey.currentState!.save();
+                              }
+                            },
                             child: Text(
                               'login',
                               style:TextStyle(
                                 fontSize: 30,
-                                color: Colors.white,
+                                color: AppColors.Background,
                               ),
                             ),
                           ),
                           SizedBox(width: 80),
                         ],
                       ),
-                      SizedBox(height: 20,),
-                      Divider(thickness: 2,color: Colors.black,),
+                      SizedBox(height: 10,),
+                      Divider(thickness: 2,color: AppColors.text_color,),
                       SizedBox(height: 10,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -197,7 +228,7 @@ class _loginState extends State<login> {
                             "Don't have an account?",
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.black,
+                              color: AppColors.text_color,
                             ),
                           ),
                           TextButton(
@@ -206,7 +237,7 @@ class _loginState extends State<login> {
                               'Sign up now',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.deepOrangeAccent,
+                                color: AppColors.login_page_signup,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
