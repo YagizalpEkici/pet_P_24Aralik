@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/utils/dimensions.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class login extends StatefulWidget {
   @override
@@ -24,6 +25,10 @@ class _loginState extends State<login> {
   void buttonPressed() {
     print(name);
     print(pass);
+  }
+
+  void pagedirection() {
+    Navigator.pushNamed(context, '/signup');
   }
 
   @override
@@ -167,11 +172,12 @@ class _loginState extends State<login> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    IconButton(onPressed: buttonPressed, icon: Icon(Icons.mail),),
+
+                    IconButton(onPressed: buttonPressed,
+                      icon: FaIcon(FontAwesomeIcons.facebook),),
                     SizedBox(width: 5,),
-                    IconButton(onPressed: buttonPressed, icon: Icon(Icons.thumb_up),),
-                    SizedBox(width: 5,),
-                    IconButton(onPressed: buttonPressed, icon: Icon(Icons.add_location),)
+                    IconButton(onPressed: buttonPressed,
+                      icon: FaIcon(FontAwesomeIcons.google),),
                   ],
                 ),
                 Container(
@@ -232,7 +238,7 @@ class _loginState extends State<login> {
                             ),
                           ),
                           TextButton(
-                            onPressed: buttonPressed,
+                            onPressed: pagedirection,
                             child: Text(
                               'Sign up now',
                               style: TextStyle(
