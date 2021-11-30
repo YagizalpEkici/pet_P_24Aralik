@@ -4,12 +4,15 @@ import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/routes/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:after_layout/after_layout.dart';
+import 'package:pet_project/routes/sign_up_page.dart';
 
 void main() => runApp(MaterialApp(
   home: Splash(),
   routes: {
     '/walk': (context) => WalkThrough(),
     '/login': (context) => login(),
+    '/SignUp': (context) => SignUp(),
+
   },
 ));
 

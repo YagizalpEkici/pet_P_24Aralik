@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_project/utils/colors.dart';
+import 'package:pet_project/utils/dimensions.dart';
 
 class WalkThrough extends StatefulWidget {
 
@@ -63,7 +64,7 @@ class _WalkThroughState extends State<WalkThrough> {
       body: SafeArea(
 
         child: Padding(
-          padding: const EdgeInsets.all(18.0),
+          padding: EdgeInsets.all(18),
           child: Column(
 
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

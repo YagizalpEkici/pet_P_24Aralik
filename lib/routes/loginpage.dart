@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:pet_project/routes/sign_up_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/utils/colors.dart';
@@ -28,7 +28,7 @@ class _loginState extends State<login> {
   }
 
   void pagedirection() {
-    Navigator.pushNamed(context, '/signup');
+    Navigator.pushNamed(context, '/SignUp');
   }
 
   @override
