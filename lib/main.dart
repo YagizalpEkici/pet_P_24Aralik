@@ -5,7 +5,9 @@ import 'package:pet_project/routes/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:pet_project/routes/sign_up_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+/*
 void main() => runApp(MaterialApp(
   home: Splash(),
   routes: {
@@ -15,6 +17,60 @@ void main() => runApp(MaterialApp(
 
   },
 ));
+ */
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyFirebaseApp());
+}
+
+class MyFirebaseApp extends StatefulWidget {
+  const MyFirebaseApp({Key? key}) : super(key: key);
+
+  @override
+  _MyFirebaseAppState createState() => _MyFirebaseAppState();
+}
+
+class _MyFirebaseAppState extends State<MyFirebaseApp> {
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: _initialization,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: Text(
+                    'No Firebase Connection ${snapshot.error.toString()}'
+                  ),
+                ),
+              ),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.done) { //if it is properly connected
+            return MaterialApp(
+              home: Splash(),
+              routes: {
+                '/walk': (context) => WalkThrough(),
+                '/login': (context) => login(),
+                '/SignUp': (context) => SignUp(),
+              },
+            );
+          }
+          return MaterialApp(
+            home: Center(
+              child: Text(
+                'Connecting to Firebase',
+              ),
+            )
+          );
+        },
+    );
+  }
+}
 
 class Splash extends StatefulWidget {
   @override
