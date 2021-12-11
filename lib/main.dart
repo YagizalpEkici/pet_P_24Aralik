@@ -9,6 +9,7 @@ import 'package:pet_project/routes/sign_up_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:pet_project/routes/homePage.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 /*
 void main() => runApp(MaterialApp(
@@ -58,8 +59,13 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
 }
 
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
   runApp(MyFirebaseApp());
 }
 

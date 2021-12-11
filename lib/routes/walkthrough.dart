@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/utils/dimensions.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class WalkThrough extends StatefulWidget {
 
