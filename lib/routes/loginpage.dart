@@ -1,17 +1,56 @@
-import 'dart:convert';
-import 'package:pet_project/routes/sign_up_page.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/utils/dimensions.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+
 
 class login extends StatefulWidget {
+  ///////////////////////////////////////////// down side is analytics
+  const login({Key? key, required this.analytics, required this.observer}) : super(key: key);
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
   @override
   _loginState createState () => _loginState();
 }
 
 class _loginState extends State<login> {
+
+  String _message = '';
+  void setMessage(String msg){
+  setState(() {
+  _message = msg;
+  });
+  }
+
+  Future <void> _setCurrentScreen() async
+  {
+    await widget.analytics.setCurrentScreen(screenName: 'login page');
+    setMessage('setCurrentScreen succeded');
+  }
+
+  Future <void> _setLogEvent() async
+  {
+    await widget.analytics.logEvent(
+        name: 'pet_project_test',
+        parameters: <String, dynamic>{
+          'string': 'string',
+          'int': 310,
+          'long': 12231412,
+          'double': 310.5,
+          'bool': true,
+        }
+    );
+    setMessage('CustomLog succeded');
+  }
+
+
+  /////////////////////////////////////// upside for analytics. rest is previous login things.
+
   final _formKey = GlobalKey<FormState>();
   String name ="";
   String pass = "";
@@ -211,6 +250,8 @@ class _loginState extends State<login> {
                               if(_formKey.currentState!.validate()) {
                                 print('Name: '+name+"\nPass: "+pass);
                                 _formKey.currentState!.save();
+                                _setCurrentScreen();
+
                               }
                             },
                             child: Text(
@@ -221,10 +262,15 @@ class _loginState extends State<login> {
                               ),
                             ),
                           ),
+                          TextButton(
+                              onPressed: _setLogEvent,
+                              child: const Text('Custom log event'),
+                          ),
                           SizedBox(width: 80),
                         ],
                       ),
                       SizedBox(height: 10,),
+
                       Divider(thickness: 2,color: AppColors.text_color,),
                       SizedBox(height: 10,),
                       Row(
