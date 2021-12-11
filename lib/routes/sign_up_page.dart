@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/utils/dimensions.dart';
 import 'package:pet_project/routes/sign_up_page.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 //flutter run --no-sound-null-safety
 class SignUp extends StatefulWidget{

@@ -6,6 +6,7 @@ import 'package:pet_project/utils/dimensions.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 
 class login extends StatefulWidget {
@@ -21,6 +22,10 @@ class login extends StatefulWidget {
 class _loginState extends State<login> {
 
   String _message = '';
+
+  get error => null;
+
+  StackTrace? get stackTrace => null;
   void setMessage(String msg){
   setState(() {
   _message = msg;
@@ -201,8 +206,17 @@ class _loginState extends State<login> {
                       checkColor: AppColors.Background,
                       value: isChecked,
                       onChanged: (bool? value) {
-                        setState(() {
+                        setState(() async {
                           isChecked = value!;
+                          FirebaseCrashlytics.instance.setCustomKey('str_key', 'checkbox');
+                          FirebaseCrashlytics.instance.log("all test!!!!!!!!!!!!!!!!");
+                          await FirebaseCrashlytics.instance.recordError(
+                              error,
+                              stackTrace,
+                              reason: 'a fatal error',
+                              // Pass in 'fatal' argument
+                              fatal: true
+                          );
                         });
                       },
                     ),

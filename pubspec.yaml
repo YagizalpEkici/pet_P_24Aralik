@@ -29,6 +29,7 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   firebase_core: "^1.10.0"
   firebase_analytics: "^8.0.3"
+  firebase_crashlytics: "^2.4.3"
 
 
 
