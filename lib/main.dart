@@ -25,6 +25,39 @@ void main() => runApp(MaterialApp(
 FirebaseAnalytics analytics = FirebaseAnalytics();
 FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
 
+class Splash extends StatefulWidget {
+  @override
+  SplashState createState() => new SplashState();
+
+}
+
+class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
+  Future checkFirstSeen() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    bool _seen = (preferences.getBool('seen') ?? false);
+
+    if (_seen) {
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new login(analytics: analytics, observer: observer)));
+    } else {
+      await preferences.setBool('seen', true);
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new WalkThrough()));
+    }
+  }
+
+
+  @override
+  void afterFirstLayout(BuildContext context) => checkFirstSeen();
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+    );
+  }
+}
+
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyFirebaseApp());
@@ -82,45 +115,12 @@ class AppBase extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorObservers: <NavigatorObserver>[observer],
-      home: login(analytics: analytics, observer: observer),
+      home: Splash(),
       routes: {
-        '/walk': (context) => WalkThrough(),
+        '/WalkThrough': (context) => WalkThrough(),
         '/login': (context) => login(analytics: analytics, observer: observer),
         '/SignUp': (context) => SignUp(),
-
-
       },
-    );
-  }
-}
-
-class Splash extends StatefulWidget {
-  @override
-  SplashState createState() => new SplashState();
-}
-
-class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
-  Future checkFirstSeen() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    bool _seen = (preferences.getBool('seen') ?? false);
-
-    if (_seen) {
-      Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new login(analytics: analytics, observer: observer)));
-    } else {
-      await preferences.setBool('seen', true);
-      Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new WalkThrough()));
-    }
-  }
-
-
-  @override
-  void afterFirstLayout(BuildContext context) => checkFirstSeen();
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
     );
   }
 }
