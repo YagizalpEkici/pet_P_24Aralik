@@ -1,14 +1,15 @@
-
+import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_project/utils/auth.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/utils/dimensions.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pet_project/routes/homePage.dart';
 class login extends StatefulWidget {
   ///////////////////////////////////////////// down side is analytics
   const login({Key? key, required this.analytics, required this.observer}) : super(key: key);
@@ -57,9 +58,10 @@ class _loginState extends State<login> {
   /////////////////////////////////////// upside for analytics. rest is previous login things.
 
   final _formKey = GlobalKey<FormState>();
-  String name ="";
+  String email ="";
   String pass = "";
   bool isChecked = false;
+  AuthService auth = AuthService();
 
   @override
   void initState() {
@@ -67,7 +69,7 @@ class _loginState extends State<login> {
   }
 
   void buttonPressed() {
-    print(name);
+    print(email);
     print(pass);
   }
 
@@ -77,6 +79,7 @@ class _loginState extends State<login> {
 
   @override
   Widget build (BuildContext context) {
+    final user = Provider.of<User?>(context);
     return Scaffold(
       body: Padding(
         padding: Dimen.RegularPadding,
@@ -114,7 +117,7 @@ class _loginState extends State<login> {
                         decoration: InputDecoration(
                           fillColor: AppColors.app_icons,
                           filled: true,
-                          hintText: "Username",
+                          hintText: "E-mail",
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: AppColors.text_color,
@@ -122,22 +125,22 @@ class _loginState extends State<login> {
                             borderRadius: Dimen.Border,
                           ),
                         ),
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.emailAddress,
 
                         validator: (value) {
                           if(value == null) {
-                            return 'Name field cannot be empty';
+                            return 'E-mail field cannot be empty';
                           } else {
                             String trimmedValue = value.trim();
                             if(trimmedValue.isEmpty) {
-                              return 'Name field cannot be empty';
+                              return 'E-mail field cannot be empty';
                             }
                           }
                           return null;
                         },
                         onSaved: (value) {
                           if(value != null) {
-                            name = value;
+                            email = value;
                           }
                         },
                       ),
@@ -262,11 +265,15 @@ class _loginState extends State<login> {
                             ),
                             onPressed: () {
                               if(_formKey.currentState!.validate()) {
-                                print('Name: '+name+"\nPass: "+pass);
+                                print('E-mail: '+email+"\nPass: "+pass);
                                 _formKey.currentState!.save();
                                 _setCurrentScreen();
+                                Navigator.pushNamed(context, '/homePage');
 
                               }
+                              auth.loginWithMailAndPass(email, pass);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(content: Text('Logging in')));
                             },
                             child: Text(
                               'login',
@@ -276,10 +283,7 @@ class _loginState extends State<login> {
                               ),
                             ),
                           ),
-                          TextButton(
-                              onPressed: _setLogEvent,
-                              child: const Text('Custom log event'),
-                          ),
+
                           SizedBox(width: 80),
                         ],
                       ),

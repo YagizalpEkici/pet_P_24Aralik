@@ -4,7 +4,9 @@ import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/utils/dimensions.dart';
 import 'package:pet_project/routes/sign_up_page.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
+import 'package:pet_project/utils/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 //flutter run --no-sound-null-safety
 class SignUp extends StatefulWidget{
 
@@ -19,7 +21,7 @@ class _SignUpState extends State<SignUp>{
   String username = "";
   String password = "";
   String repassword = "";
-
+  AuthService auth = AuthService();
   TextEditingController pass = TextEditingController();
   TextEditingController repass = TextEditingController();
 
@@ -362,6 +364,8 @@ class _SignUpState extends State<SignUp>{
                                 _formKey.currentState!.save();
                                 buttonPressed();
                               }
+                              auth.signupWithMailAndPass(email, password);
+
                             },
                             child: Text(
                               'Sign-up',
