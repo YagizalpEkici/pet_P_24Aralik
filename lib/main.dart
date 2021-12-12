@@ -10,7 +10,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:pet_project/routes/homePage.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
+import 'package:pet_project/utils/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pet_project/routes/homePage.dart';
+import 'package:provider/provider.dart';
 /*
 void main() => runApp(MaterialApp(
   home: Splash(),
@@ -25,7 +28,7 @@ void main() => runApp(MaterialApp(
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
-
+final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 class Splash extends StatefulWidget {
   @override
   SplashState createState() => new SplashState();
@@ -77,7 +80,7 @@ class MyFirebaseApp extends StatefulWidget {
 }
 
 class _MyFirebaseAppState extends State<MyFirebaseApp> {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
 
   @override
   Widget build(BuildContext context) {
@@ -112,22 +115,42 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
 }
 
 
-class AppBase extends StatelessWidget {
-  const AppBase({Key? key}) : super(key: key);
 
-
-
+/*
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return StreamProvider<User?>.value(
+      value: AuthService().user,
+      initialData: null,
+      child: MaterialApp(
+        navigatorObservers: <NavigatorObserver>[observer],
+        home: homePage(analytics: analytics, observer: observer),
+        routes: {
+          '/login': (context) => login(),
+        },
+      ),
+    );
+  }
+*/
+  class AppBase extends StatelessWidget {
+  const AppBase({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<User?>.value(
+        value: AuthService().user,
+    initialData: null,
+    child: MaterialApp(
       navigatorObservers: <NavigatorObserver>[observer],
       home: Splash(),
       routes: {
         '/WalkThrough': (context) => WalkThrough(),
         '/login': (context) => login(analytics: analytics, observer: observer),
         '/SignUp': (context) => SignUp(),
+        '/homePage': (context) => homePage(),
       },
+    )
     );
+
   }
 }
 
