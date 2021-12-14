@@ -7,6 +7,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:pet_project/utils/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:pet_project/utils/db.dart';
 //flutter run --no-sound-null-safety
 class SignUp extends StatefulWidget{
 
@@ -22,6 +23,7 @@ class _SignUpState extends State<SignUp>{
   String password = "";
   String repassword = "";
   AuthService auth = AuthService();
+  DBService db = DBService();
   TextEditingController pass = TextEditingController();
   TextEditingController repass = TextEditingController();
 
@@ -362,7 +364,9 @@ class _SignUpState extends State<SignUp>{
                             onPressed: () {
                               if(_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
+                                db.addUserAutoID(username, email, name, surname, password, repassword);
                                 buttonPressed();
+
                               }
                               auth.signupWithMailAndPass(email, password);
 
