@@ -1,7 +1,6 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/routes/walkthrough.dart';
-import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/routes/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:after_layout/after_layout.dart';
@@ -12,19 +11,8 @@ import 'package:pet_project/routes/homePage.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:pet_project/utils/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pet_project/routes/homePage.dart';
 import 'package:provider/provider.dart';
-/*
-void main() => runApp(MaterialApp(
-  home: Splash(),
-  routes: {
-    '/walk': (context) => WalkThrough(),
-    '/login': (context) => login(),
-    '/SignUp': (context) => SignUp(),
 
-  },
-));
- */
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
@@ -114,24 +102,6 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
   }
 }
 
-
-
-/*
-  @override
-  Widget build(BuildContext context) {
-    return StreamProvider<User?>.value(
-      value: AuthService().user,
-      initialData: null,
-      child: MaterialApp(
-        navigatorObservers: <NavigatorObserver>[observer],
-        home: homePage(analytics: analytics, observer: observer),
-        routes: {
-          '/login': (context) => login(),
-        },
-      ),
-    );
-  }
-*/
   class AppBase extends StatelessWidget {
   const AppBase({Key? key}) : super(key: key);
   @override
