@@ -229,10 +229,10 @@ class _loginState extends State<login> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
 
-                    IconButton(onPressed: buttonPressed,
-                      icon: FaIcon(FontAwesomeIcons.facebook),),
                     SizedBox(width: 5,),
-                    IconButton(onPressed: buttonPressed,
+                    IconButton(onPressed: (){
+                      auth.googleSignIn();
+                    },
                       icon: FaIcon(FontAwesomeIcons.google),),
                   ],
                 ),
