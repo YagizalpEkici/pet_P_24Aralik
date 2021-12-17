@@ -1,9 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pet_project/routes/sign_up_page.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  String _message = '';
+  String msg = '';
+
+  String getMessage() {
+    return msg;
+  }
 
   User? _userFromFirebase(User? user) {
     return user ?? null;
@@ -27,9 +35,17 @@ class AuthService {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: mail, password: pass);
       User user = result.user!;
-    } catch (e) {
+      return _userFromFirebase(user);
+    } on FirebaseAuthException catch (e) {
       print(e.toString());
       return null;
+      /*
+      if (e.code == 'email-already-in-use') {
+        _message = 'This email is already in use, please try another email';
+        msg = _message;
+      }
+
+       */
     }
   }
 
@@ -37,9 +53,25 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: mail, password: pass);
       User user = result.user!;
-    } catch (e) {
+      return _userFromFirebase(user);
+    } on FirebaseAuthException catch (e) {
       print(e.toString());
       return null;
+      /*
+      if (e.code == 'user-not-found') {
+        _message = e.toString();
+        msg = _message;
+      }
+      else if (e.code == 'wrong-password') {
+        _message = e.toString();
+        msg = _message;
+      }
+      else {
+        _message = '';
+        msg = _message;
+      }
+
+       */
     }
   }
 
@@ -61,8 +93,6 @@ class AuthService {
     User? user = result.user;
     return _userFromFirebase(user);
   }
-
-
 
   Future signOut() async {
     try {

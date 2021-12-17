@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/utils/auth.dart';
@@ -9,7 +13,10 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pet_project/routes/createPetProfile.dart';
 import 'package:pet_project/routes/homePage.dart';
+
+
 class login extends StatefulWidget {
   ///////////////////////////////////////////// down side is analytics
   const login({Key? key, required this.analytics, required this.observer}) : super(key: key);
@@ -23,20 +30,43 @@ class login extends StatefulWidget {
 class _loginState extends State<login> {
 
   String _message = '';
+  String _alertmessage = '';
 
   get error => null;
-
   StackTrace? get stackTrace => null;
+
   void setMessage(String msg){
   setState(() {
   _message = msg;
   });
   }
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Invalid Credentials'),
+          content: SingleChildScrollView(
+            child: Text(_alertmessage),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK')),
+          ],
+        );
+      },
+    );
+  }
+
   Future <void> _setCurrentScreen() async
   {
     await widget.analytics.setCurrentScreen(screenName: 'login page');
-    setMessage('setCurrentScreen succeded');
+    //setMessage('setCurrentScreen succeded');
   }
 
   Future <void> _setLogEvent() async
@@ -54,7 +84,6 @@ class _loginState extends State<login> {
     setMessage('CustomLog succeded');
   }
 
-
   /////////////////////////////////////// upside for analytics. rest is previous login things.
 
   final _formKey = GlobalKey<FormState>();
@@ -62,6 +91,7 @@ class _loginState extends State<login> {
   String pass = "";
   bool isChecked = false;
   AuthService auth = AuthService();
+
 
   @override
   void initState() {
@@ -126,20 +156,23 @@ class _loginState extends State<login> {
                           ),
                         ),
                         keyboardType: TextInputType.emailAddress,
-
                         validator: (value) {
-                          if(value == null) {
-                            return 'E-mail field cannot be empty';
-                          } else {
-                            String trimmedValue = value.trim();
-                            if(trimmedValue.isEmpty) {
-                              return 'E-mail field cannot be empty';
+                          if(value==null){
+                            return 'email field cannot be empty!';
+                          }
+                          else{
+
+                            if(value.isEmpty){
+                              return 'email field cannot be empty';
+                            }
+                            if(!EmailValidator.validate(value)){
+                              return 'please enter a valid email!';
                             }
                           }
                           return null;
                         },
-                        onSaved: (value) {
-                          if(value != null) {
+                        onSaved: (value){
+                          if(value != null){
                             email = value;
                           }
                         },
@@ -263,17 +296,21 @@ class _loginState extends State<login> {
                                 },
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async{
                               if(_formKey.currentState!.validate()) {
-                                print('E-mail: '+email+"\nPass: "+pass);
                                 _formKey.currentState!.save();
                                 _setCurrentScreen();
-                                Navigator.pushNamed(context, '/homePage');
+                                dynamic result = await auth.loginWithMailAndPass(email, pass);
 
+                                if(result == null) {
+                                  _alertmessage = 'Please check your mail and password enter try again';
+                                  _showMyDialog();
+                                }
+                                else {
+                                  Navigator.pushNamed(context, '/homePage');
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Logging in')));
+                                }
                               }
-                              auth.loginWithMailAndPass(email, pass);
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text('Logging in')));
                             },
                             child: Text(
                               'login',
