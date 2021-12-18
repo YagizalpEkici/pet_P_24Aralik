@@ -39,13 +39,6 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       print(e.toString());
       return null;
-      /*
-      if (e.code == 'email-already-in-use') {
-        _message = 'This email is already in use, please try another email';
-        msg = _message;
-      }
-
-       */
     }
   }
 
@@ -57,21 +50,6 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       print(e.toString());
       return null;
-      /*
-      if (e.code == 'user-not-found') {
-        _message = e.toString();
-        msg = _message;
-      }
-      else if (e.code == 'wrong-password') {
-        _message = e.toString();
-        msg = _message;
-      }
-      else {
-        _message = '';
-        msg = _message;
-      }
-
-       */
     }
   }
 
