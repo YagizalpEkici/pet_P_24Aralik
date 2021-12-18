@@ -1,6 +1,8 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/profileAppBarPages/editProfile.dart';
+import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
+
 import 'package:pet_project/routes/walkthrough.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/routes/loginpage.dart';
@@ -153,6 +155,7 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/friendshipRequests': (context) => friendshipRequests(),
         '/editProfile': (context) => editProfile(),
         '/createPetProfile': (context) => createPet(),
+
       },
     )
     );
