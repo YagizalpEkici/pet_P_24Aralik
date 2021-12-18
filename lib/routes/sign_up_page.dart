@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_project/utils/db.dart';
 import 'package:pet_project/routes/createPetProfile.dart';
+
 //flutter run --no-sound-null-safety
 
 class SignUp extends StatefulWidget{
@@ -401,7 +402,6 @@ class _SignUpState extends State<SignUp>{
                               if(_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 dynamic result = await auth.signupWithMailAndPass(email, password);
-                                print(result);
                                 if (result != null) {
                                   _alertmsg = 'This email is already in use, please try another email';
                                   _showMyDialog();
