@@ -72,9 +72,7 @@ class _SignUpState extends State<SignUp>{
     return true;
   }
   void pageDirection() {
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => createPet()));
     Navigator.pushNamed(context, '/createPetProfile', arguments: {'name':name, 'email':email, 'surname':surname, 'username':username,'password':password,'repassword':repassword});
-
   }
 
   void buttonPressed() {
@@ -403,7 +401,8 @@ class _SignUpState extends State<SignUp>{
                               if(_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 dynamic result = await auth.signupWithMailAndPass(email, password);
-                                if (result == null) {
+                                print(result);
+                                if (result != null) {
                                   _alertmsg = 'This email is already in use, please try another email';
                                   _showMyDialog();
                                 }
