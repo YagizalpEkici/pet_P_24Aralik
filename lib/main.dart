@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_project/profileAppBarPages/editProfile.dart';
 import 'package:pet_project/routes/walkthrough.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/routes/loginpage.dart';
@@ -14,6 +15,8 @@ import 'package:pet_project/utils/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pet_project/routes/homePage.dart';
 import 'package:provider/provider.dart';
+import 'package:pet_project/routes/createPetProfile.dart';
+import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
 /*
 void main() => runApp(MaterialApp(
   home: Splash(),
@@ -147,6 +150,9 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/login': (context) => login(analytics: analytics, observer: observer),
         '/SignUp': (context) => SignUp(),
         '/homePage': (context) => homePage(),
+        '/friendshipRequests': (context) => friendshipRequests(),
+        '/editProfile': (context) => editProfile(),
+        '/createPetProfile': (context) => createPet(),
       },
     )
     );
