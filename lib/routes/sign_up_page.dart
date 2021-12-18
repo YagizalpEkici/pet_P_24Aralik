@@ -8,21 +8,25 @@ import 'package:pet_project/utils/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_project/utils/db.dart';
+import 'package:pet_project/routes/createPetProfile.dart';
 //flutter run --no-sound-null-safety
+
 class SignUp extends StatefulWidget{
 
   @override
   _SignUpState createState() => _SignUpState();
 }
+
 class _SignUpState extends State<SignUp>{
   final _formKey = GlobalKey<FormState>();
+  AuthService auth = AuthService();
+  String _alertmsg ='';
   String name = "";
   String email = "";
   String surname = "";
   String username = "";
   String password = "";
   String repassword = "";
-  AuthService auth = AuthService();
   DBService db = DBService();
   TextEditingController pass = TextEditingController();
   TextEditingController repass = TextEditingController();
@@ -32,11 +36,45 @@ class _SignUpState extends State<SignUp>{
     super.initState();
   }
 
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ALERT'),
+          content: SingleChildScrollView(
+            child: Text(_alertmsg),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK')),
+
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel', style: TextStyle(color: Colors.red)),)
+          ],
+        );
+      },
+    );
+  }
+
   bool check(String password, String repassword) {
     if(repassword != password) {
       return false;
     }
     return true;
+  }
+  void pageDirection() {
+    //Navigator.push(context, MaterialPageRoute(builder: (context) => createPet()));
+    Navigator.pushNamed(context, '/createPetProfile', arguments: {'name':name, 'email':email, 'surname':surname, 'username':username,'password':password,'repassword':repassword});
+
   }
 
   void buttonPressed() {
@@ -361,15 +399,19 @@ class _SignUpState extends State<SignUp>{
                                 },
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if(_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                db.addUserAutoID(username, email, name, surname, password, repassword);
-                                buttonPressed();
-
+                                dynamic result = await auth.signupWithMailAndPass(email, password);
+                                if (result == null) {
+                                  _alertmsg = 'This email is already in use, please try another email';
+                                  _showMyDialog();
+                                }
+                                else {
+                                  pageDirection();
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Signing up')));
+                                }
                               }
-                              auth.signupWithMailAndPass(email, password);
-
                             },
                             child: Text(
                               'Sign-up',
@@ -412,4 +454,3 @@ class _SignUpState extends State<SignUp>{
     );
   }
 }
-

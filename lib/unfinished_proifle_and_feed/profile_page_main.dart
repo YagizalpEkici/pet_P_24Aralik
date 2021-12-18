@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:profile_page_v2/profilePage.dart';
-
-import '../routes/HomeScreen.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/HomeScreen.dart';
 
 void main() => runApp(new MyApp());
 
