@@ -37,33 +37,7 @@ class _homePageState extends State<homePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-      ),
       body: screens[currentIndex],
-      /*PageView(
-        controller: pageController,
-        children: [
-          Container(
-            color: Colors.black,
-          ),
-          Container(
-            color: Colors.yellow,
-          ),
-          Container(
-            color: Colors.blue,
-          ),
-          Container(
-            color: Colors.purple,
-          ),
-          Container(
-            color: Colors.green,
-
-          ),
-        ],
-
-       */
-
 
       bottomNavigationBar: BottomNavigationBar(items: const < BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home), label:'mainFeed'),

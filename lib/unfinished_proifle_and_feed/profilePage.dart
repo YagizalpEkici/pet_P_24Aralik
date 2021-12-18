@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
+import 'package:pet_project/profileAppBarPages/options.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/HomeScreen.dart';
+import 'package:pet_project/profileAppBarPages/editProfile.dart';
 /*
 void main(){
   runApp(MaterialApp(
@@ -11,11 +13,26 @@ void main(){
 class profilePage extends StatefulWidget {
   const profilePage({Key? key}) : super(key: key);
 
+
   @override
   _profilePageState createState() => _profilePageState();
 }
 
 class _profilePageState extends State<profilePage> {
+
+
+  int currentIndex = 0;
+
+
+  void editProfile() {
+    Navigator.pushNamed(context, '/editProfile');
+  }
+
+  void friendshipRequests() {
+    Navigator.pushNamed(context, '/friendshipRequests');
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,43 +41,29 @@ class _profilePageState extends State<profilePage> {
         title: Text(
           'nameOfTheApp',
           style: TextStyle(
-          color: Colors.black,
-          letterSpacing: -1,
-          fontSize: 20,
+            color: Colors.black,
+            letterSpacing: -1,
+            fontSize: 20,
           ),
         ),
-        leading: GestureDetector(
-          onTap: () {},
-          child: Icon(
-            Icons.menu,  // add custom icons also
+
+        actions: [
+          IconButton(
+            icon: Icon(Icons.ac_unit),
+            onPressed: editProfile,
           ),
-        ),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                  Icons.people,
-                  size: 26.0,
-                ),
-              )
+          IconButton(
+            icon: Icon(Icons.ac_unit),
+            onPressed: friendshipRequests,
           ),
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                    Icons.add_circle
-                ),
-              )
-          ),
+
         ],
+
         centerTitle: true,
       ),
       body: PageView(
         //controller: pc,
-        children:[
+        children: [
           SingleChildScrollView(
             child: Column(
               children: [
@@ -77,7 +80,8 @@ class _profilePageState extends State<profilePage> {
                       child: CircleAvatar(
                         radius: 70,
                         child: ClipOval(
-                          child: Image.network('https://cdn-1.motorsport.com/images/amp/YpN8nVN0/s1000/sergio-perez-red-bull-racing-1.jpg')
+                            child: Image.network(
+                                'https://cdn-1.motorsport.com/images/amp/YpN8nVN0/s1000/sergio-perez-red-bull-racing-1.jpg')
                         ),
                       ),
                     ),
@@ -92,19 +96,19 @@ class _profilePageState extends State<profilePage> {
     );
   }
 
-  Widget myChip(String label, Color color ){
+  Widget myChip(String label, Color color) {
     return Chip(
       label: Text(
           label,
-        style: const TextStyle(
-          color: Colors.grey,
-        )
+          style: const TextStyle(
+            color: Colors.grey,
+          )
       ),
     );
   }
 
 
-  Widget ChipBuilder(){
+  Widget ChipBuilder() {
     return Wrap(
       alignment: WrapAlignment.start,
       spacing: 6,
@@ -112,11 +116,10 @@ class _profilePageState extends State<profilePage> {
       children: [
         myChip('Follower', Color(0xFFff6666)),
         myChip('Breed', Color(0xFFff6666)),
-        
+
       ],
 
     );
   }
-
-
 }
+
