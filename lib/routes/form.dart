@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class form extends StatelessWidget {
+  const form({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Text(
-          'Main feed page',
+          'form page',
           style: TextStyle(
             fontSize: 48,
             fontWeight: FontWeight.bold,
@@ -18,3 +18,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
