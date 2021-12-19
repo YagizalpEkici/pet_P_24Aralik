@@ -61,7 +61,7 @@ class _profilePageState extends State<profilePage> {
 
         actions: [
           IconButton(
-            icon: Icon(Icons.add_circle),
+            icon: Icon(Icons.edit),
             onPressed: editProfile,
           ),
           IconButton(
