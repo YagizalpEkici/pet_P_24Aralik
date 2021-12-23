@@ -4,10 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:file/file.dart';
+//import 'package:file/file.dart';
 import 'package:pet_project/utils/db.dart';
 
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 class createPet extends StatefulWidget{
   @override
@@ -16,35 +18,48 @@ class createPet extends StatefulWidget{
 
 class _createPet extends State<createPet> {
   final _formKey = GlobalKey<FormState>();
+
   String petName = "";
   String bio = "";
   String birthYear = "";
   String breed = "";
   String sex = "";
   List<String> sexType = ["female", "male", "none"];
-
-  final ImagePicker _picker = ImagePicker();
-  String url ="";
+  String url = "";
   DBService db = DBService();
 
-  _imgFromCamera() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      setState(() {
-        url = image.path;
-      });
-    }
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
+
+  Future pickImageGallery() async {
+    final pickedFile=await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = pickedFile;
+    });
+  }
+  Future pickImageCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = pickedFile;
+    });
   }
 
-  _imgFromGallery() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = basename(_image!.path);
+    url = fileName;
+    Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('uploads/$fileName');
+    try {
+      await firebaseStorageRef.putFile(File(_image!.path));
+      print('upload compete');
       setState(() {
-        url = image.path;
+        _image = null;
       });
+    } on FirebaseException catch(e) {
+      print('ERROR: ${e.code} - ${e.message}');
+    } catch(e){
+      print(e.toString());
     }
   }
-
   @override
   void initState(){
     super.initState();
@@ -54,7 +69,7 @@ class _createPet extends State<createPet> {
     print(petName+"\n"+bio+"\n"+birthYear+"\n"+breed+"\n"+sex+"\n");
   }
   void pageDirection() {
-    Navigator.pushNamed(context, '/homePage');
+    Navigator.pushNamed(this.context, '/homePage');
   }
   void textPressed() {}
 
@@ -77,46 +92,90 @@ class _createPet extends State<createPet> {
                             children: [
                               Expanded(
                                 flex: 1,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: ClipOval(
-                                    child:
-                                      Image.network(url),
-                                  ),
-                                  radius: 60,
+                                child: Stack(
+                                  children: [
+                                    Center(
+                                      child: Container(
+                                        child: CircleAvatar(
+                                          child: ClipOval(
+                                            //borderRadius: BorderRadius.circular(30),
+                                            child: _image != null ? Image.file(File(_image!.path)) :TextButton(
+                                              child:
+                                              Icon(
+                                                  Icons.add_a_photo,
+                                                  color: Colors.white,
+                                                  size:70
+                                              ),
+                                              onPressed: () {},
+                                            ),
+                                          ),
+                                          radius: 70,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ]
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            OutlinedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                    if(states.contains(MaterialState.pressed))
+                                      return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                                    return Colors.grey;
+                                  },
+                                ),
+                              ),
+                              onPressed: pickImageGallery,
+                              child: Text(
+                                'gallery',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            OutlinedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                    if(states.contains(MaterialState.pressed))
+                                      return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                                    return Colors.grey;
+                                  },
+                                ),
+                              ),
+                              onPressed: pickImageCamera,
+                              child: Text(
+                                'camera',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         SizedBox(height: 10,),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                                flex: 1,
-                                child: Column(
-                                    children: [
-                                      TextButton(
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                                  (Set<MaterialState> states) {
-                                                if(states.contains(MaterialState.pressed))
-                                                  return Theme.of(context).colorScheme.primary.withOpacity(0.5);
-                                                return Colors.blueGrey;
-                                              }
-                                          ),
-                                        ),
-                                        onPressed: (){
-                                          //chooseImage();
-                                          _imgFromGallery();
-                                        },
-                                        child: Text('Add Profile Picture',
-                                          style: TextStyle(fontSize: 15, color: Colors.white,),),
 
-                                      ),
-                                    ]
-                                )
-                            )
+                            SizedBox(width: 16,),
+                            if(_image != null) OutlinedButton(
+                              onPressed: (){
+                                setState(() {
+                                  _image = null;
+                                });
+
+                              },
+                              child: Text('Cancel'),
+                            ),
                           ],
                         ),
                         SizedBox(height: 10,),
@@ -304,7 +363,11 @@ class _createPet extends State<createPet> {
                                         if (_formKey.currentState!.validate()) {
                                           print("route: homePage successful");
                                           _formKey.currentState!.save();
+                                          if(_image != null) {
+                                            uploadImageToFirebase(context);
+                                          }
                                           db.addUserAutoID(args['username'],args['email'],args['name'],args['surname'],args['password'],args['repassword'],petName,bio,birthYear,breed,sex,url);
+
                                           //_setCurrentScreen();
                                           pageDirection();
                                         }

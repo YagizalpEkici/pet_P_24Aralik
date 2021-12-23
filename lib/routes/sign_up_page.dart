@@ -402,7 +402,7 @@ class _SignUpState extends State<SignUp>{
                               if(_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 dynamic result = await auth.signupWithMailAndPass(email, password);
-                                if (result != null) {
+                                if (result == null) {
                                   _alertmsg = 'This email is already in use, please try another email';
                                   _showMyDialog();
                                 }
