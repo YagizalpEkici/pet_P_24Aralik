@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pet_project/routes/homePage.dart';
 
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+
 class editProfile extends StatefulWidget{
   @override
   _editProfile createState() => _editProfile();
@@ -19,6 +23,41 @@ class _editProfile extends State<editProfile> {
   String breed = "";
   String sex = "";
   List<String> sexType = ["female", "male", "none"];
+  String url = "";
+
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
+
+  Future pickImageGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = pickedFile;
+    });
+  }
+  Future pickImageCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = pickedFile;
+    });
+  }
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = basename(_image!.path);
+    url = fileName;
+    Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('uploads/$fileName');
+    try {
+      await firebaseStorageRef.putFile(File(_image!.path));
+      print('upload compete');
+      setState(() {
+        _image = null;
+      });
+    } on FirebaseException catch(e) {
+      print('ERROR: ${e.code} - ${e.message}');
+    } catch(e){
+      print(e.toString());
+    }
+  }
+
 
 
   @override
@@ -30,7 +69,7 @@ class _editProfile extends State<editProfile> {
     print(petName+"\n"+bio+"\n"+birthYear+"\n"+breed+"\n"+sex+"\n");
   }
   void pageDirection() {
-    Navigator.pushNamed(context, '/homePage');
+    Navigator.pushNamed(this.context, '/homePage');
   }
 
   @override
@@ -42,7 +81,7 @@ class _editProfile extends State<editProfile> {
             //onPressed:() => exit(0),
           ),
           title: Text(
-            'Edit Your pets Profile',
+            "Edit Your Pet's Profile",
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.w600,
@@ -61,83 +100,98 @@ class _editProfile extends State<editProfile> {
                   child: Column(
                       children: [
                         SizedBox(height: 15,),
-                        Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(110, 5, 20, 10),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Please fill all the blanks',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(40, 0, 20, 10),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'even though you will not update all of them.',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              'Please fill all the blanks',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
                         ),
+                        SizedBox(height: 5,),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
                                 flex: 1,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: ClipOval(
-                                    child:
-                                    Image.network('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
-                                  ),
-                                  radius: 65,
+                                child: Stack(
+                                  children: [
+                                    Center(
+                                      child: Container(
+                                        child: CircleAvatar(
+                                          child: ClipOval(
+                                            child: getImage(),
+                                          ),
+                                          radius: 70,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ]
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            OutlinedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                    if(states.contains(MaterialState.pressed))
+                                      return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                                    return Colors.grey;
+                                  },
+                                ),
+                              ),
+                              onPressed: pickImageGallery,
+                              child: Text(
+                                'gallery',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            OutlinedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                    if(states.contains(MaterialState.pressed))
+                                      return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                                    return Colors.grey;
+                                  },
+                                ),
+                              ),
+                              onPressed: pickImageCamera,
+                              child: Text(
+                                'camera',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         SizedBox(height: 10,),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                                flex: 1,
-                                child: Column(
-                                    children: [
-                                      TextButton(
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                                  (Set<MaterialState> states) {
-                                                if(states.contains(MaterialState.pressed))
-                                                  return Theme.of(context).colorScheme.primary.withOpacity(0.5);
-                                                return Colors.blueGrey;
-                                              }
-                                          ),
-                                        ),
-                                        onPressed: (){
-                                          //chooseImage();
-                                          print('button pressed');
-                                        },
-                                        child: Text('Add Profile Picture',
-                                          style: TextStyle(fontSize: 15, color: Colors.white,),),
+                            SizedBox(width: 16,),
+                            if(_image != null) OutlinedButton(
+                              onPressed: (){
+                                setState(() {
+                                  _image = null;
+                                });
 
-                                      ),
-                                    ]
-                                )
-                            )
+                              },
+                              child: Text('Cancel'),
+                            ),
                           ],
                         ),
                         SizedBox(height: 10,),
@@ -325,6 +379,7 @@ class _editProfile extends State<editProfile> {
                                         if (_formKey.currentState!.validate()) {
                                           print("route: homePage successful");
                                           _formKey.currentState!.save();
+
                                           pageDirection();
                                         }
                                       },
@@ -348,6 +403,17 @@ class _editProfile extends State<editProfile> {
               ),
             )
         )
+    );
+  }
+  Widget getImage() {
+    return _image != null ? Image.file(File(_image!.path)) :TextButton(
+      child:
+      Icon(
+          Icons.face,
+          color: Colors.white,
+          size:70
+      ),
+      onPressed: () {},
     );
   }
 }
