@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pet_project/unfinished_proifle_and_feed/post.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,16 +15,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pet_project/routes/createPetProfile.dart';
 import 'package:pet_project/routes/homePage.dart';
 import 'package:foldable_sidebar/foldable_sidebar.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/post.dart';
 
 class PostTile extends StatelessWidget {
 
   final Post post;
-  final VoidCallback delete;
   final VoidCallback incrementLike;
 
   const PostTile({
     required this.post,
-    required this.delete,
     required this.incrementLike
   });
 
@@ -34,7 +32,7 @@ class PostTile extends StatelessWidget {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8),
       shadowColor: Colors.amber,
-      elevation: 8,
+      elevation: 12,
       child: Padding(
         padding: EdgeInsets.all(8),
         child: Column(
@@ -44,6 +42,11 @@ class PostTile extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10),
               child: Text(
                 post.text,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
                 //style: kCardTextLabel,
               ),
             ),
@@ -52,7 +55,10 @@ class PostTile extends StatelessWidget {
               children: [
                 Text(
                   post.date,
-                  //style: kSubtitleLabel,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
 
                 Spacer(),
@@ -61,51 +67,35 @@ class PostTile extends StatelessWidget {
                   onPressed: incrementLike,
                   icon: Icon(
                     Icons.thumb_up,
-                    color: Colors.amber,
-                    size: 14,
+                    color: Colors.green,
+                    size: 17,
                   ),
                   label: Text(
                     ' x ${post.likeCount}',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
                     //style: kSubtitleLabel,
                   ),
                 ),
-                /*
-                Icon(
-                  Icons.thumb_up,
-                  color: AppColors.primaryColor,
-                  size: 14,
-                ),
-                Text(
-                  ' x ${post.likeCount}',
-                  style: kSubtitleLabel,
-                ),
-                 */
 
                 SizedBox(width: 16,),
 
                 Icon(
                   Icons.comment,
-                  size: 14,
-                  color: Colors.amber,
+                  size: 17,
+                  color: Colors.red,
                 ),
 
                 Text(
                   ' x ${post.commentCount}',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                   //style: kSubtitleLabel,
                 ),
 
                 SizedBox(width: 16,),
-
-                IconButton(
-                  onPressed: delete,
-                  padding: EdgeInsets.all(0),
-                  iconSize: 14,
-                  splashRadius: 24,
-                  color: Colors.red,
-                  icon: Icon(
-                    Icons.delete,
-                  ),
-                ),
               ],
             ),
           ],
