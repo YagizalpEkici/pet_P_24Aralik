@@ -5,6 +5,7 @@ import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
 import 'package:pet_project/routes/GenerateGathering.dart';
 
 import 'package:pet_project/routes/walkthrough.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/notifications.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/routes/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -157,6 +158,7 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/editProfile': (context) => editProfile(),
         '/createPetProfile': (context) => createPet(),
         '/gatherings': (context) => gatherings(),
+        '/notifications': (context) => notifications(),
 
       },
     )

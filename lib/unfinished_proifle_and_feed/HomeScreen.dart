@@ -15,9 +15,10 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pet_project/routes/createPetProfile.dart';
 import 'package:pet_project/routes/homePage.dart';
-import 'package:foldable_sidebar/foldable_sidebar.dart';
 
-import 'custom_sidebar_drawer.dart';
+import 'navigation_drawer_widget.dart';
+
+
 
 
 
@@ -28,7 +29,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  FSBStatus _fsbStatus = FSBStatus.FSB_CLOSE;
   List<Post> myPosts = [
     Post(text: 'Hello World 1', date: '22.10.2021', likeCount: 10, commentCount: 5),
     Post(text: 'Hello World 2', date: '22.10.2021', likeCount: 20, commentCount: 10),
@@ -43,30 +43,48 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          //backgroundColor: Colors.red[400],
-          //title: Text("Flutter Foldable Sidebar Demo") ,
-          leading: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: (){
-              setState(() {
-                _fsbStatus = _fsbStatus == FSBStatus.FSB_OPEN ?
-                FSBStatus.FSB_CLOSE : FSBStatus.FSB_OPEN;
-              });
-            },
+        ),
+
+        drawer: NavigationDrawerWidget(),
+        body:Padding(
+          padding: Dimen.RegularPadding,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ElevatedButton.icon(onPressed: () {
+
+                    },
+                      icon: Icon(Icons.add_photo_alternate),
+                      label: Text('Add Photo'),
+                    ),
+                    SizedBox(
+                      width: 9,
+                    ),
+                    ElevatedButton.icon(onPressed: () {
+
+                    },
+                      icon: Icon(Icons.add_a_photo),
+                      label: Text('Take Photo'),
+                    ),
+                    SizedBox(
+                      width: 9,
+                    ),
+                    ElevatedButton.icon(onPressed: () {
+
+                    },
+                      icon: Icon(Icons.send),
+                      label: Text('Status'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-        body: FoldableSidebarBuilder(
-          drawerBackgroundColor: Colors.white,
-          drawer: CustomSidebarDrawer(drawerClose: (){
-            setState(() {
-              _fsbStatus = FSBStatus.FSB_CLOSE;
-            });
-          },
-          ),
-          screenContents: feedScreen(),
-          status: _fsbStatus,
-        ),
+
       ),
     );
   }
