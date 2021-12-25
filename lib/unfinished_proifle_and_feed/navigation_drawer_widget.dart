@@ -33,6 +33,12 @@ class NavigationDrawerWidget extends StatelessWidget {
           padding: padding,
           children: [
             const SizedBox(height: 48),
+            Expanded(child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Text('V - g.0.6.2', style: TextStyle(color: Colors.white),),
+            ),
+            ),
+            const SizedBox(height: 48),
             buildMenuItem(
               text: 'Notifications',
               icon: Icons.notifications,
@@ -44,11 +50,8 @@ class NavigationDrawerWidget extends StatelessWidget {
             buildMenuItem(text: 'User Agreement', icon: Icons.menu_book_outlined, onClicked: () => selectedItem(context, 2),),
             const SizedBox(height: 48),
             buildMenuItem(text: 'Community Rules', icon: Icons.assignment, onClicked: () => selectedItem(context, 3),),
-            Expanded(child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Text('V - g.0.6.2', style: TextStyle(color: Colors.white),),
-            ),
-            )
+            //const SizedBox(height: 130),
+
           ],
         ),
       ),
