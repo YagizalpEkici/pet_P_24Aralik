@@ -129,7 +129,7 @@ class _gatheringState extends State<gathering> {
                             setState(() {
                               post.likeCount++;
                             });
-                          },
+                          }, delete: () {  },
                         )
                 ).toList(),
               ),
