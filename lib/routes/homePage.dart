@@ -21,7 +21,7 @@ class _homePageState extends State<homePage> {
     HomeScreen(),
     search(),
     gathering(),
-    form(),
+    forum(),
     profilePage(),
   ];
   //PageController pageController = PageController();
