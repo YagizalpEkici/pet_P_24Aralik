@@ -19,7 +19,7 @@ import 'package:pet_project/routes/createPetProfile.dart';
 import 'package:pet_project/routes/homePage.dart';
 
 import 'communityrules.dart';
-import 'notifications.dart';
+import 'notification.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   NavigationDrawerWidget({Key? key}) : super(key: key);

@@ -23,6 +23,14 @@ class communityrules extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Community Rules'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Text('Community Rules'),
+      ),
+    );
   }
 }
