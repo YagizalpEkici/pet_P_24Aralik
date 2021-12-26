@@ -5,8 +5,10 @@ import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
 import 'package:pet_project/routes/GenerateGathering.dart';
 
 import 'package:pet_project/routes/walkthrough.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/addphoto.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/changepassword.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/notification.dart';
-import 'package:pet_project/unfinished_proifle_and_feed/notifications.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/notification.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/routes/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -161,6 +163,8 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/gatherings': (context) => gatherings(),
         '/notifications': (context) => notifications(),
         '/notification': (context) => notifications(),
+        '/changepassword': (context) => changepassword(),
+        '/addphoto': (context) => addphoto(),
 
       },
     )

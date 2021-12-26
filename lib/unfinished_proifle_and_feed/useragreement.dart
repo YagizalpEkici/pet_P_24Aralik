@@ -23,6 +23,14 @@ class useragreement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('User Agreement'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Text('User agreement'),
+      ),
+    );
   }
 }
