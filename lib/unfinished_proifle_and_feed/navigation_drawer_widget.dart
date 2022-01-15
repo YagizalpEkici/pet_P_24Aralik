@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pet_project/profileAppBarPages/options.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/privateOtherProfile.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/post.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/useragreement.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +62,7 @@ class NavigationDrawerWidget extends StatelessWidget {
     required String text,
     required IconData icon,
     VoidCallback? onClicked,
-}){
+  }){
     final color = Colors.white;
     final hoverColor = Colors.white70;
 

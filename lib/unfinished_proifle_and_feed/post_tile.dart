@@ -68,17 +68,6 @@ class PostTile extends StatelessWidget {
                     //style: kSubtitleLabel,
                   ),
                 ),
-                /*
-                Icon(
-                  Icons.thumb_up,
-                  color: AppColors.primaryColor,
-                  size: 14,
-                ),
-                Text(
-                  ' x ${post.likeCount}',
-                  style: kSubtitleLabel,
-                ),
-                 */
 
                 SizedBox(width: 16,),
 

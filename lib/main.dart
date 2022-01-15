@@ -2,14 +2,16 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/profileAppBarPages/editProfile.dart';
 import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
-import 'package:pet_project/routes/GenerateGathering.dart';
+import 'package:pet_project/routes/forumPage.dart';
+import 'package:pet_project/routes/generateForum.dart';
+import 'package:pet_project/routes/otherUserProfile.dart';
+
 
 import 'package:pet_project/routes/walkthrough.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/addphoto.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/changepassword.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/notification.dart';
-import 'package:pet_project/unfinished_proifle_and_feed/notification.dart';
-import 'package:pet_project/utils/colors.dart';
+
 import 'package:pet_project/routes/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:after_layout/after_layout.dart';
@@ -24,6 +26,8 @@ import 'package:pet_project/routes/homePage.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_project/routes/createPetProfile.dart';
 import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
+
+import 'firestore_related/users.dart';
 /*
 void main() => runApp(MaterialApp(
   home: Splash(),
@@ -35,6 +39,7 @@ void main() => runApp(MaterialApp(
   },
 ));
  */
+
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
@@ -160,11 +165,13 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/friendshipRequests': (context) => friendshipRequests(),
         '/editProfile': (context) => editProfile(),
         '/createPetProfile': (context) => createPet(),
-        '/gatherings': (context) => gatherings(),
+        '/generateForum': (context) => generateForum(),
+        '/forumPage': (context) => forumPage(),
         '/notifications': (context) => notifications(),
         '/notification': (context) => notifications(),
         '/changepassword': (context) => changepassword(),
         '/addphoto': (context) => addphoto(),
+        '/otherUserProfile': (context) => otherprofilePage(),
 
       },
     )

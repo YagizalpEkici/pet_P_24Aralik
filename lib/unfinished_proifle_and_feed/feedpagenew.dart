@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/firestore_related/users.dart';
+
 import 'package:pet_project/utils/colors.dart';
 
 class friendshipRequests extends StatefulWidget {
@@ -96,7 +95,7 @@ class _friendshipRequestsState extends State<friendshipRequests> {
     });
   }
 
-  acceptfollow(String docid) {
+  acceptfollow() {
     setState(() {
 
     });
@@ -114,14 +113,6 @@ class _friendshipRequestsState extends State<friendshipRequests> {
 
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
-
-    FirebaseFirestore.instance
-        .collection('followRequest')
-        .doc(docid)
-        .update({
-      "userMail": 'AAAAAAAAAAAAAAAAAAAAA',
-    });
-
 
     SnackBar successSnackBar =
     SnackBar(content: Text("Profile has been updated."));
@@ -208,36 +199,13 @@ class _friendshipRequestsState extends State<friendshipRequests> {
                                         child: Text('✔', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white,),),
                                         onPressed: () {
                                           followers.add(doc['senderMail']);
-                                          acceptfollow(doc.id);
-
+                                          acceptfollow();
+                                          doc['userMail'].delete();
                                         }
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Container(
-                                    child: TextButton(
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                                  (Set<MaterialState> states) {
-                                                if (states.contains(MaterialState.pressed))
-                                                  return Theme
-                                                      .of(context)
-                                                      .colorScheme
-                                                      .primary
-                                                      .withOpacity(0.5);
-                                                return Colors.red;
-                                              }
-                                          ),
-                                        ),
-                                        child: Text('X', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white,),),
-                                        onPressed: () {
-                                          acceptfollow(doc.id);
-                                        }
-                                    ),
-                                  ),
-                                ),
+                                denyButton(3),
                               ],
                             ),
                           ),
@@ -254,7 +222,10 @@ class _friendshipRequestsState extends State<friendshipRequests> {
           ),
           /*
           Padding(
+
             padding: const EdgeInsets.all(16.0),
+
+
             child: ListView.builder(
               itemCount: friendRequestList.length,
               itemBuilder: (context, index) {
@@ -272,6 +243,7 @@ class _friendshipRequestsState extends State<friendshipRequests> {
                           children: [
                             acceptButton(index),
                             denyButton(index),
+
                           ],
                         ),
                       ),
@@ -280,6 +252,7 @@ class _friendshipRequestsState extends State<friendshipRequests> {
                 );
               },
             ),
+
           ),
           */
 
@@ -307,7 +280,7 @@ class _friendshipRequestsState extends State<friendshipRequests> {
             child: Text('✔', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white,),),
             onPressed: () {
               followers.add(sendermailunique);
-              //acceptfollow();
+              acceptfollow();
 
             }
         ),
@@ -340,37 +313,4 @@ class _friendshipRequestsState extends State<friendshipRequests> {
       ),
     );
   }
-/*Widget totalFriendContainer(){
-    return Container(
-      margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-      padding: EdgeInsets.all(15),
-      decoration: BoxDecoration(
-          color: AppColors.Background,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [BoxShadow(blurRadius: 10, color: AppColors.app_icons,)]
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('Total Friends: ', style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: AppColors.text_color,
-              ),
-              ),
-              Text(friendNum.toString(), style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: AppColors.text_color,
-              ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }*/
 }

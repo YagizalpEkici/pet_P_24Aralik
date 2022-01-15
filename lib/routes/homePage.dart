@@ -1,11 +1,13 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+
 import 'package:pet_project/routes/search.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/HomeScreen.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
+import 'package:pet_project/routes/forumPage.dart';
 
 import 'form.dart';
-import 'gathering.dart';
+//import 'forumPage.dart';
 
 
 class homePage extends StatefulWidget {
@@ -19,8 +21,8 @@ class _homePageState extends State<homePage> {
   int currentIndex = 0;
   final screens = [
     HomeScreen(),
-    search(),
-    gathering(),
+    SearchPage(),
+    forumPage(),
     forum(),
     profilePage(),
   ];

@@ -1,40 +1,28 @@
+/*
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pet_project/firestore_related/posts.dart';
-import 'package:pet_project/firestore_related/users.dart';
 import 'package:pet_project/routes/homePage.dart';
-
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/utils/dimensions.dart';
-
 import 'package:uuid/uuid.dart';
-
 var uuid = Uuid();
-
-
-
 class addphoto extends StatefulWidget {
   const addphoto({Key? key}) : super(key: key);
-
   @override
   _addphotoState createState() => _addphotoState();
 }
-
 class _addphotoState extends State<addphoto> {
-
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
-
   user? currentUser;
   Post? currentPost;
-
   String password="";
   String name="";
   String surname="";
@@ -51,27 +39,20 @@ class _addphotoState extends State<addphoto> {
   bool profType=true;
   List<dynamic> posts = [];
   String email ="";
-
   DateTime? date;
   String postPhotoURL = "";
   List<dynamic> comments = [];
   List<dynamic> likes = [];
   String content = "";
   var pickedFile;
-  String url2 = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png";
-
   String url = "";
-
   //var photoUrl = "https://firebasestorage.googleapis.com/v0/b/sinapps0.appspot.com/o/profilepictures%2FScreen%20Shot%202021-06-06%20at%2023.43.18.png?alt=media&token=6c28fb47-2924-4b74-a3d6-b47a3844fea0";
-
   // Controller error about post
   String error = "";
   String contentHint = 'Explain your case and include all necessary information.\n'
       'e.g. I encountered an very rare that and wanted to share my idea about that...';
   String titleHint = "Be spesific and give insight about your case.";
   bool errorHint = false;
-
-
   Future pickImageGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
@@ -95,8 +76,6 @@ class _addphotoState extends State<addphoto> {
     }
   }
   String id = uuid.v4();
-
-
   void _loadUserInfo() async {
     FirebaseAuth _auth;
     User? _user;
@@ -106,7 +85,6 @@ class _addphotoState extends State<addphoto> {
         .collection('user')
         .where('email', isEqualTo: _user?.email)
         .get();
-
     setState(() {
       username = x.docs[0]['username'];
       password=x.docs[0]['password'];
@@ -121,41 +99,13 @@ class _addphotoState extends State<addphoto> {
       breed = x.docs[0]['breed'];
       birthYear = x.docs[0]['birthYear'];
       email=x.docs[0]['email'];
-      posts=x.docs[0]['posts'];
+      postsUser=x.docs[0]['posts'];
       profType=x.docs[0]['profType'];
-
     });
   }
-
-
-  addPostToUser() {
-    setState(() {
-
-    });
-    FirebaseAuth _auth;
-    User? _user;
-    _auth = FirebaseAuth.instance;
-    _user = _auth.currentUser;
-
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(_user?.email)
-        .update({
-      "posts": posts,
-    })
-
-        .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
-
-    SnackBar successSnackBar =
-    SnackBar(content: Text("Profile has been updated."));
-  }
-
   void pageDirection() {
     Navigator.pushNamed(this.context, '/homePage');
   }
-
-
   Future<void> addPost(Post cPost) async {
     final CollectionReference posts = FirebaseFirestore.instance.collection('posts');
     //var post_ref = posts.doc();
@@ -173,13 +123,11 @@ class _addphotoState extends State<addphoto> {
   /*
   updateUserData() {
     setState(() {
-
     });
     FirebaseAuth _auth;
     User? _user;
     _auth = FirebaseAuth.instance;
     _user = _auth.currentUser;
-
     FirebaseFirestore.instance
         .collection('user')
         .doc(_user?.email)
@@ -188,26 +136,19 @@ class _addphotoState extends State<addphoto> {
     })
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
-
     SnackBar successSnackBar =
     SnackBar(content: Text("Profile has been updated."));
   }
-
    */
-
-
   @override
   void initState() {
     _loadUserInfo();
     //_loadPostInfo();
     super.initState();
   }
-
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-
     currentUser = user(
       username: username,
       name: name,
@@ -225,7 +166,6 @@ class _addphotoState extends State<addphoto> {
       sex: sex,
       breed: breed,
     );
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Add new post"),
@@ -336,7 +276,7 @@ class _addphotoState extends State<addphoto> {
                       'email', isEqualTo: email)
                       .get();
                   print(result.size);
-                  if (result.size >= 0) {
+                  if (result.size != 0) {
                     FirebaseAuth _auth;
                     _auth = FirebaseAuth.instance;
                     User? _user = _auth.currentUser;
@@ -349,14 +289,11 @@ class _addphotoState extends State<addphoto> {
                       comments: [],
                       likes: [],
                       email: email,
-                      postPhotoURL: url2,
+                      postPhotoURL: pickedFile,
                       date: DateTime.now(),
                     );
                     addPost(cPost);
-                    posts.add(id);
-                    addPostToUser();
                     //updateUserData();
-
                     pageDirection();
                   }
                 }
@@ -367,7 +304,6 @@ class _addphotoState extends State<addphoto> {
       ),
     );
   }
-
   Widget getImage() {
     return _image != null ? Image.file(File(_image!.path)) :TextButton(
       child:
@@ -379,5 +315,5 @@ class _addphotoState extends State<addphoto> {
       onPressed: () {},
     );
   }
-
 }
+*/
