@@ -262,8 +262,10 @@ class _optionsState extends State<options> {
                   child: ElevatedButton(
                     onPressed: () async {
                       await _auth.signOut().then((result) {
-                        Navigator.of(context).pop(true);
-                      });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => login(observer: FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),analytics: FirebaseAnalytics(),)),
+                        );                      });
                     },
                     child: Text('Log Out'), style: ElevatedButton.styleFrom(
                       minimumSize: Size(300.0, 50.0)
@@ -285,8 +287,10 @@ class _optionsState extends State<options> {
                         TextButton(
                           onPressed: (){
                             FirebaseAuth.instance.currentUser!.delete();
-                            Navigator.pop(context, 'Yes');
-                          },
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => login(observer: FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),analytics: FirebaseAnalytics(),)),
+                            );                          },
                           child: const Text('Yes'),
                         ),
                         TextButton(

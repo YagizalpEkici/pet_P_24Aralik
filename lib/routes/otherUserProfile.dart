@@ -448,7 +448,7 @@ class _otherprofilePageState extends State<otherprofilePage> {
                       userMail: email,
                       senderMail: args['email2'],
                       pid: id,
-                      sendername: username);
+                      sendername: args['username2']);
 
                   addFollow(newfollow);
                   addNotif(newnotif);

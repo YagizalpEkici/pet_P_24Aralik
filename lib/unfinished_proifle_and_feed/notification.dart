@@ -160,14 +160,14 @@ class _notifications extends State<notifications> {
                         return Card(
                           child: ListTile(
                             title: Text(doc['sendername'] + ' liked your post.'),
-                            trailing: ElevatedButton(onPressed: buttonPressedlike, child: Text('->'),),
+                            trailing: ElevatedButton(onPressed: (){buttonPressedlike(doc.id);}, child: Text('X'),style: ElevatedButton.styleFrom(primary: Colors.red)),
                           ),
                         );}
                       else if(doc['type'] == 'comment'){
                         return Card(
                           child: ListTile(
                             title: Text(doc['sendername'] + ' commented on your post.'),
-                            trailing: ElevatedButton(onPressed: buttonPressedcomment, child: Text('->'),),
+                            trailing: ElevatedButton(onPressed: (){buttonPressedcomment(doc.id);}, child: Text('X'),style: ElevatedButton.styleFrom(primary: Colors.red),),
                           ),
                         );
                       }
@@ -175,7 +175,7 @@ class _notifications extends State<notifications> {
                         return Card(
                           child: ListTile(
                             title: Text(doc['sendername'] + ' sent you a following request.'),
-                            trailing: ElevatedButton(onPressed: buttonPressedfollow, child: Text('->'),),
+                            trailing: ElevatedButton(onPressed: (){buttonPressedfollow(doc.id);}, child: Text('->'),),
                           ),
                         );
                       }
@@ -269,13 +269,38 @@ class _notifications extends State<notifications> {
       ),
     );
   }
-  void buttonPressedlike(){
-    Navigator.pushNamed(context, '/friendshipRequests');
+  void buttonPressedlike(String docid){
+    setState(() {
+
+    });
+    FirebaseFirestore.instance
+        .collection('notification')
+        .doc(docid)
+        .update({
+      "userMail": 'deleted',
+    });
   }
-  void buttonPressedcomment(){
-    Navigator.pushNamed(context, '/friendshipRequests');
+  void buttonPressedcomment(String docid){
+    setState(() {
+
+    });
+    FirebaseFirestore.instance
+        .collection('notification')
+        .doc(docid)
+        .update({
+      "userMail": 'deleted',
+    });
   }
-  void buttonPressedfollow(){
+  void buttonPressedfollow(String docid){
+    setState(() {
+
+    });
+    FirebaseFirestore.instance
+        .collection('notification')
+        .doc(docid)
+        .update({
+      "userMail": 'deleted',
+    });
     Navigator.pushNamed(context, '/friendshipRequests');
   }
 }

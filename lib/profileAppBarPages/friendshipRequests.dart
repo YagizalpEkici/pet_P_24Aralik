@@ -59,6 +59,7 @@ class _friendshipRequestsState extends State<friendshipRequests> {
   String birthYear = "";
   String sex = "";
   String breed = "";
+  List<dynamic> senderfollowing = [];
 
 
 
@@ -96,9 +97,14 @@ class _friendshipRequestsState extends State<friendshipRequests> {
     });
   }
 
-  acceptfollow(String docid) {
-    setState(() {
+  acceptfollow(String docid, String uniqueSenderMail, int check) async {
+    var dbSenderGetter = await FirebaseFirestore.instance.collection('user').where('email', isEqualTo: uniqueSenderMail).get();
 
+    setState(() {
+        senderfollowing = dbSenderGetter.docs[0]['following'];
+        if(check == 1) {
+          senderfollowing.add(userMail);
+        }
     });
     FirebaseAuth _auth;
     User? _user;
@@ -110,6 +116,16 @@ class _friendshipRequestsState extends State<friendshipRequests> {
         .doc(_user?.email)
         .update({
       "followers": followers,
+    })
+
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(uniqueSenderMail)
+        .update({
+      "following": senderfollowing,
     })
 
         .then((value) => print("User Updated"))
@@ -208,7 +224,7 @@ class _friendshipRequestsState extends State<friendshipRequests> {
                                         child: Text('✔', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white,),),
                                         onPressed: () {
                                           followers.add(doc['senderMail']);
-                                          acceptfollow(doc.id);
+                                          acceptfollow(doc.id, doc['senderMail'], 1);
 
                                         }
                                     ),
@@ -233,7 +249,7 @@ class _friendshipRequestsState extends State<friendshipRequests> {
                                         ),
                                         child: Text('X', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white,),),
                                         onPressed: () {
-                                          acceptfollow(doc.id);
+                                          acceptfollow(doc.id, '', 0);
                                         }
                                     ),
                                   ),
