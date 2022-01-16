@@ -45,6 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+
   String password="";
   String name="";
   String surname="";
@@ -71,6 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   user? currentUser;
   Post? currentPost;
+
+  List<dynamic> updateLike = [];
 
 
   void _loadUserInfo() async {
@@ -130,6 +134,38 @@ class _HomeScreenState extends State<HomeScreen> {
       print("its in");
       feedLoading = false;
     });
+  }
+
+
+  updateForumData(pid, currEmail, updateLike) async{
+
+
+
+
+    List<dynamic>  currentlikeArray = [];
+    var x = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('pid', isEqualTo: pid)
+        .get();
+    setState(() {
+      currentlikeArray = x.docs[0]['likes'];
+      updateLike = currentlikeArray;
+
+    });
+
+    updateLike.add(currEmail);
+
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(pid)
+        .update({
+      "likes": updateLike,
+    })
+        .then((value) => print("Forum Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+
+    SnackBar successSnackBar =
+    SnackBar(content: Text("Profile has been updated."));
   }
 
   @override
@@ -196,6 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 600,
                     child: ListView(
                       children: snapshot.data!.docs.map((doc) {
+                        updateLike=doc.get('likes');
                         if(currentUser!.following.contains(doc.get(('email'))) || doc.get('email') == currentUser!.email) {
                           return Card(
                             clipBehavior: Clip.antiAlias,
@@ -230,6 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 Image.asset('assets/image1.jpg'),
+
                                 ButtonBar(
                                   alignment: MainAxisAlignment.spaceEvenly,
                                   children: [
@@ -243,10 +281,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       icon: Icon(Icons.thumb_up),
                                       onPressed: () {
+                                        if(!doc.get('likes').contains(currentUser!.email)){
+                                          updateForumData(doc.get('pid'), currentUser!.email, updateLike);
+                                        }
                                         // Perform some action
+
                                       },
-                                      label: const Text('Like'),
+                                      label: Text('${updateLike.length}'),
                                     ),
+
 
                                     ElevatedButton.icon(
                                       style: ButtonStyle(
@@ -258,6 +301,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       icon: Icon(Icons.comment),
                                       onPressed: () {
+
+
                                         // Perform some action
                                       },
                                       label: const Text('Comment'),

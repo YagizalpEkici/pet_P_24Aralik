@@ -6,9 +6,7 @@ import 'package:pet_project/unfinished_proifle_and_feed/HomeScreen.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
 import 'package:pet_project/routes/forumPage.dart';
 
-import 'form.dart';
-//import 'forumPage.dart';
-
+import 'package:pet_project/routes/form.dart';
 
 class homePage extends StatefulWidget {
   const homePage({Key? key}) : super(key: key);
@@ -23,8 +21,9 @@ class _homePageState extends State<homePage> {
     HomeScreen(),
     SearchPage(),
     forumPage(),
-    forum(),
     profilePage(),
+    //forum(),
+
   ];
   //PageController pageController = PageController();
 
@@ -41,35 +40,12 @@ class _homePageState extends State<homePage> {
     return Scaffold(
 
       body: screens[currentIndex],
-      /*PageView(
-        controller: pageController,
-        children: [
-          Container(
-            color: Colors.black,
-          ),
-          Container(
-            color: Colors.yellow,
-          ),
-          Container(
-            color: Colors.blue,
-          ),
-          Container(
-            color: Colors.purple,
-          ),
-          Container(
-            color: Colors.green,
-
-          ),
-        ],
-
-       */
-
 
       bottomNavigationBar: BottomNavigationBar(items: const < BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home), label:'mainFeed'),
         BottomNavigationBarItem(icon: Icon(Icons.search), label:'search'),
-        BottomNavigationBarItem(icon: Icon(Icons.meeting_room), label:'gathering'),
-        BottomNavigationBarItem(icon: Icon(Icons.pending_actions), label:'form'),
+        BottomNavigationBarItem(icon: Icon(Icons.meeting_room), label:'forum'),
+        //BottomNavigationBarItem(icon: Icon(Icons.pending_actions), label:'form'),
         BottomNavigationBarItem(icon: Icon(Icons.accessibility), label:'profile'),
 
       ],
