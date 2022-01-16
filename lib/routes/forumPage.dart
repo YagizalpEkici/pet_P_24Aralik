@@ -117,7 +117,7 @@ class _forumPageState extends State<forumPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 500,
+                  height: 610,
                   child: ListView(
                     children: snapshot.data!.docs.map((doc) {
                       return Card(

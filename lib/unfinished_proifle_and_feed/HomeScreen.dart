@@ -32,17 +32,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  /*
-  List<Post> myPostsmain = [
-    Post(text: 'Hello World 1', date: '22.10.2021', likeCount: 10, commentCount: 5),
-    Post(text: 'Hello World 2', date: '22.10.2021', likeCount: 20, commentCount: 10),
-    Post(text: 'Hello World 3', date: '22.10.2021', likeCount: 30, commentCount: 15),
-    Post(text: 'Hello World 4', date: '25.10.2021', likeCount: 40, commentCount: 20),
-    Post(text: 'Hello World 5', date: '25.10.2021', likeCount: 50, commentCount: 25),
-    Post(text: 'Hello World 6', date: '25.10.2021', likeCount: 60, commentCount: 30),
-  ];
 
-   */
 
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
@@ -115,24 +105,12 @@ class _HomeScreenState extends State<HomeScreen> {
   bool feedLoading = true;
   int postsSize = 0;
 
-
+  final db = FirebaseFirestore.instance;
 
   void _loadUserProf() async {
 
-    FirebaseAuth _auth;
-    User? _user;
-    _auth = FirebaseAuth.instance;
-    _user = _auth.currentUser;
-
-    var x = await FirebaseFirestore.instance
-        .collection('user')
-        .where('email', isEqualTo: _user?.email)
-        .get();
-
-
     var profPosts = await FirebaseFirestore.instance
         .collection('posts')
-        .where('pid', isEqualTo: 'e48e32ef-39bf-414f-b0ce-c030055627dc')
         .get();
 
     postsSize = profPosts.size;
@@ -164,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     currentUser = user(
       username: username,
       name: name,
@@ -181,75 +160,126 @@ class _HomeScreenState extends State<HomeScreen> {
       sex: sex,
       breed: breed,
     );
-
-    currentPost= Post(
-      username: username,
-      pid : pid,
-      comments: comments,
-      likes: likes,
-      content: content,
-      userPhotoUrl: photoUrl,
-      postPhotoURL: postPhotoURL,
-      email: email,
-      date: DateTime.now(),
-    );
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-           'FEED PAGE' ,
+            'FEED PAGE' ,
           ),
           centerTitle: true,
         ),
 
         drawer: NavigationDrawerWidget(),
-        body:Padding(
-          padding: Dimen.RegularPadding,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton.icon(onPressed: () {
-                      Navigator.pushNamed(context, '/addphoto');
-                    },
-                      icon: Icon(Icons.add_photo_alternate),
-                      label: Text('Add Photo'),
-                    ),
-                    SizedBox(
-                      width: 9,
-                    ),
-                    ElevatedButton.icon(onPressed: pickImageCamera,
-                      icon: Icon(Icons.add_a_photo),
-                      label: Text('Take Photo'),
-                    ),
-                    SizedBox(
-                      width: 9,
-                    ),
-                    /*
-                    ElevatedButton.icon(onPressed: () {
 
-                    },
-                      icon: Icon(Icons.send),
-                      label: Text('Status'),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: db.collection('posts').snapshots(),
+          builder: (context, snapshot) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton.icon(onPressed: () {
+                        Navigator.pushNamed(context, '/addphoto');
+                      },
+                        icon: Icon(Icons.add_photo_alternate),
+                        label: Text('Add Photo'),
+                      ),
+                      ElevatedButton.icon(onPressed: pickImageCamera,
+                        icon: Icon(Icons.add_a_photo),
+                        label: Text('Take Photo'),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 600,
+                    child: ListView(
+                      children: snapshot.data!.docs.map((doc) {
+                        if(currentUser!.following.contains(doc.get(('email'))) || doc.get('email') == currentUser!.email) {
+                          return Card(
+                            clipBehavior: Clip.antiAlias,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: Icon(Icons.person),
+                                  title: Text(
+                                    doc.get('username'),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    ('26.12.2021'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.6),
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    doc.get('content'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.6),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                Image.asset('assets/image1.jpg'),
+                                ButtonBar(
+                                  alignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButton.icon(
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(18),
+                                          ),
+                                        ),
+                                      ),
+                                      icon: Icon(Icons.thumb_up),
+                                      onPressed: () {
+                                        // Perform some action
+                                      },
+                                      label: const Text('Like'),
+                                    ),
+
+                                    ElevatedButton.icon(
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(18),
+                                          ),
+                                        ),
+                                      ),
+                                      icon: Icon(Icons.comment),
+                                      onPressed: () {
+                                        // Perform some action
+                                      },
+                                      label: const Text('Comment'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                          );
+                        }
+                        else {
+                          return Text('');
+                        }
+                      }).toList(),
                     ),
-                    */
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                        height: 480, width: 379,
-                        child: feedposts()),
-                  ],
-                )
-              ],
-            ),
-          ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
-
       ),
     );
   }

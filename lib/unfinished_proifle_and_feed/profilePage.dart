@@ -240,273 +240,273 @@ class _profilePageState extends State<profilePage> {
         stream: db.collection('posts').snapshots(),
         builder: (context, snapshot) {
           return SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text('Follower',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-
-                                ],
-                              ),
-                              Chip(
-                                label:
-                                Container(
-                                  child: Text(
-                                    '${followers.length}',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  width: 80,
-                                  height: 20,
-                                ),
-                              ),
-                              SizedBox(height: 15,),
-                              Row(
-                                children: [
-                                  Text('Breed',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),),
-                                ],
-                              ),
-                              Chip(
-                                label:
-                                Container(
-                                  child: Text(
-                                    '${breed}',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  width: 90,
-                                  height: 20,
-                                ),
-                              ),
-                            ],
-
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(14),
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
-                              radius: 56,
-                            ),
-
-                          ),
-
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text('Following',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),),
-                                ],
-                              ),
-                              Chip(
-                                label:
-                                Container(
-                                  child: Text(
-                                    '${following.length}',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  width: 80,
-                                  height: 20,
-                                ),
-                              ),
-                              SizedBox(height: 15,),
-                              Row(
-                                children: [
-                                  Text('BirthYear',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Chip(
-                                label:
-                                Container(
-                                  child: Text(
-                                    '${birthYear}',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  width: 80,
-                                  height: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Bio',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
-                        child: Card(
-                          margin: EdgeInsets.symmetric(vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),),
-                          color: Colors.grey[300],
-                          elevation: 8,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  '${bio}',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
-
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Divider(thickness: 4,
-                      color: Colors.black,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 500,
-                child: ListView(
-                  children: snapshot.data!.docs.map((doc) {
-                    if(doc.get('email') == email) {
-                      return Card(
-                        clipBehavior: Clip.antiAlias,
-                        child: Column(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            ListTile(
-                              leading: Icon(Icons.person),
-                              title: Text(doc['username']),
-                              subtitle: Text(
-                                ('$date'),
-                                style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                              ),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text('Follower',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                                Chip(
+                                  label:
+                                  Container(
+                                    child: Text(
+                                      '${followers.length}',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    width: 80,
+                                    height: 20,
+                                  ),
+                                ),
+                                SizedBox(height: 15,),
+                                Row(
+                                  children: [
+                                    Text('Breed',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),),
+                                  ],
+                                ),
+                                Chip(
+                                  label:
+                                  Container(
+                                    child: Text(
+                                      '${breed}',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    width: 90,
+                                    height: 20,
+                                  ),
+                                ),
+                              ],
+
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                doc['content'],
-                                style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                              padding: const EdgeInsets.all(14),
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
+                                radius: 56,
                               ),
+
                             ),
 
-                            Image.asset('assets/image1.jpg'),
-                            ButtonBar(
-                              alignment: MainAxisAlignment.spaceEvenly,
+                            Column(
                               children: [
-                                ElevatedButton.icon(
-                                  style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
-                                    ),
-                                  ),
-                                  icon: Icon(Icons.thumb_up),
-                                  onPressed: () {
-                                    // Perform some action
-                                  },
-                                  label: const Text('Like'),
+                                Row(
+                                  children: [
+                                    Text('Following',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),),
+                                  ],
                                 ),
-
-                                ElevatedButton.icon(
-                                  style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
+                                Chip(
+                                  label:
+                                  Container(
+                                    child: Text(
+                                      '${following.length}',
+                                      textAlign: TextAlign.center,
                                     ),
+                                    width: 80,
+                                    height: 20,
                                   ),
-                                  icon: Icon(Icons.comment),
-                                  onPressed: () {
-                                    // Perform some action
-                                  },
-                                  label: const Text('Comment'),
                                 ),
-
-                                ElevatedButton.icon(
-                                  style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
+                                SizedBox(height: 15,),
+                                Row(
+                                  children: [
+                                    Text('BirthYear',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
+                                  ],
+                                ),
+                                Chip(
+                                  label:
+                                  Container(
+                                    child: Text(
+                                      '${birthYear}',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    width: 80,
+                                    height: 20,
                                   ),
-                                  icon: Icon(Icons.share),
-                                  onPressed: () {
-                                    // Perform some action
-                                  },
-                                  label: const Text('Share'),
-
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      );
-                    }
-                    else{
-                      return Card();
-                    }
-                  }).toList(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Bio',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+                          child: Card(
+                            margin: EdgeInsets.symmetric(vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),),
+                            color: Colors.grey[300],
+                            elevation: 8,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    '${bio}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
+
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-       },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Divider(thickness: 4,
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 500,
+                  child: ListView(
+                    children: snapshot.data!.docs.map((doc) {
+                      if(doc.get('email') == email) {
+                        return Card(
+                          clipBehavior: Clip.antiAlias,
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading: Icon(Icons.person),
+                                title: Text(doc['username']),
+                                subtitle: Text(
+                                  ('$date'),
+                                  style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  doc['content'],
+                                  style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                                ),
+                              ),
+
+                              Image.asset('assets/image1.jpg'),
+                              ButtonBar(
+                                alignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton.icon(
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(18),
+                                        ),
+                                      ),
+                                    ),
+                                    icon: Icon(Icons.thumb_up),
+                                    onPressed: () {
+                                      // Perform some action
+                                    },
+                                    label: const Text('Like'),
+                                  ),
+
+                                  ElevatedButton.icon(
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(18),
+                                        ),
+                                      ),
+                                    ),
+                                    icon: Icon(Icons.comment),
+                                    onPressed: () {
+                                      // Perform some action
+                                    },
+                                    label: const Text('Comment'),
+                                  ),
+
+                                  ElevatedButton.icon(
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(18),
+                                        ),
+                                      ),
+                                    ),
+                                    icon: Icon(Icons.share),
+                                    onPressed: () {
+                                      // Perform some action
+                                    },
+                                    label: const Text('Share'),
+
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      else{
+                        return Card();
+                      }
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
