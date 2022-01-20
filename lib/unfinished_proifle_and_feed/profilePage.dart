@@ -75,6 +75,8 @@ class _profilePageState extends State<profilePage> {
   user? currentUser;
   Post? currentPost;
 
+  List<dynamic> updateLike = [];
+
   void _loadUserInfo() async {
     FirebaseAuth _auth;
     User? _user;
@@ -143,6 +145,34 @@ class _profilePageState extends State<profilePage> {
       print("its in");
       feedLoading = false;
     });
+  }
+
+  updateForumData(pid, currEmail, updateLike) async{
+
+    List<dynamic>  currentlikeArray = [];
+    var x = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('pid', isEqualTo: pid)
+        .get();
+    setState(() {
+      currentlikeArray = x.docs[0]['likes'];
+      updateLike = currentlikeArray;
+
+    });
+
+    updateLike.add(currEmail);
+
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(pid)
+        .update({
+      "likes": updateLike,
+    })
+        .then((value) => print("Forum Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+
+    SnackBar successSnackBar =
+    SnackBar(content: Text("Profile has been updated."));
   }
 
   final db = FirebaseFirestore.instance;
@@ -406,7 +436,15 @@ class _profilePageState extends State<profilePage> {
                           child: Column(
                             children: [
                               ListTile(
-                                leading: Icon(Icons.person),
+                                leading: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: Image.network('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/otherUserProfile', arguments: {'email':doc.get('email'), 'email2':email, 'username2':username});
+                                    print('button clicked');
+                                  },
+                                ),
                                 title: Text(doc['username']),
                                 subtitle: Text(
                                   ('$date'),
@@ -435,10 +473,15 @@ class _profilePageState extends State<profilePage> {
                                     ),
                                     icon: Icon(Icons.thumb_up),
                                     onPressed: () {
+                                      if(!doc.get('likes').contains(currentUser!.email)){
+                                        updateForumData(doc.get('pid'), currentUser!.email, updateLike);
+                                      }
                                       // Perform some action
+
                                     },
-                                    label: const Text('Like'),
+                                    label: Text('${doc.get('likes').length}'),
                                   ),
+
 
                                   ElevatedButton.icon(
                                     style: ButtonStyle(
@@ -450,25 +493,10 @@ class _profilePageState extends State<profilePage> {
                                     ),
                                     icon: Icon(Icons.comment),
                                     onPressed: () {
+                                      Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid')});
                                       // Perform some action
                                     },
                                     label: const Text('Comment'),
-                                  ),
-
-                                  ElevatedButton.icon(
-                                    style: ButtonStyle(
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(18),
-                                        ),
-                                      ),
-                                    ),
-                                    icon: Icon(Icons.share),
-                                    onPressed: () {
-                                      // Perform some action
-                                    },
-                                    label: const Text('Share'),
-
                                   ),
                                 ],
                               ),
@@ -540,6 +568,7 @@ class _profilePageState extends State<profilePage> {
                 ),
                 icon: Icon(Icons.comment),
                 onPressed: () {
+
                   // Perform some action
                 },
                 label: const Text('Comment'),

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_project/firestore_related/users.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/post.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
 import 'package:pet_project/utils/colors.dart';
 import 'package:pet_project/utils/dimensions.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/post_tile.dart';
@@ -19,6 +21,66 @@ class forumPage extends StatefulWidget {
 
 class _forumPageState extends State<forumPage> {
   final _formKey = GlobalKey<FormState>();
+
+  String password = "";
+  String name = "";
+  String surname = "";
+  String petName = "";
+  String sex = "";
+  List<dynamic> followers = [];
+  List<dynamic> following = [];
+  String bio = "",
+      usernameCurr = "",
+      breed = "",
+      photoUrl = "",
+      birthYear = "";
+  List<dynamic> postsUser = [];
+  bool profType = true;
+  List<dynamic> posts = [];
+  String email = "";
+
+  DateTime? date;
+  String postPhotoURL = "";
+  List<dynamic> comments = [];
+  List<dynamic> likes = [];
+  String content = "";
+  String pid = "";
+
+  user? currentUser;
+  Post? currentPost;
+
+  List<dynamic> updateLike = [];
+
+
+  void _loadUserInfo() async {
+    FirebaseAuth _auth;
+    User? _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+    var x = await FirebaseFirestore.instance
+        .collection('user')
+        .where('email', isEqualTo: _user?.email)
+        .get();
+
+    setState(() {
+      usernameCurr = x.docs[0]['username'];
+      password = x.docs[0]['password'];
+      name = x.docs[0]['name'];
+      surname = x.docs[0]['surname'];
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      sex = x.docs[0]['sex'];
+      petName = x.docs[0]['petName'];
+      photoUrl = x.docs[0]['photoUrl'];
+      bio = x.docs[0]['bio'];
+      breed = x.docs[0]['breed'];
+      birthYear = x.docs[0]['birthYear'];
+      email = x.docs[0]['email'];
+      posts = x.docs[0]['posts'];
+      profType = x.docs[0]['profType'];
+    });
+  }
+
 
 
 
@@ -60,7 +122,7 @@ class _forumPageState extends State<forumPage> {
         .where('fid', isEqualTo: fid)
         .get();
     setState(() {
-      currentlike = x.docs[0]['like'];
+      currentlike = x.docs[0]['likes'];
     });
     print(currentlike);
 
@@ -132,10 +194,47 @@ class _forumPageState extends State<forumPage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.blue,
-                                    radius: 30,
-                                    backgroundImage: NetworkImage('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: Image.network(
+                                        'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      if (currentUser!.email == doc.get('email')) {
+                                        Navigator.push(context, new MaterialPageRoute(
+                                            builder: (context) => new profilePage())
+                                        );
+                                      }
+                                      else if(doc.get('followers').contains(currentUser!.email)){
+                                        Navigator.pushNamed(
+                                            context, '/otherUserProfile',
+                                            arguments: {
+                                              'email': doc.get('email'),
+                                              'email2': currentUser!.email,
+                                              'username2': currentUser!.username,
+                                            });
+                                      }
+                                      else if(!doc.get('followers').contains(currentUser!.email) && doc.get('profType') == true) { //private takip edilmiyor
+                                        Navigator.pushNamed(
+                                            context, '/otherUserProfile',
+                                            arguments: {
+                                              'email': doc.get('email'),
+                                              'email2': currentUser!.email,
+                                              'username2': currentUser!.username,
+                                            });
+                                      }
+                                      else if(!doc.get('followers').contains(currentUser!.email) && doc.get('profType') == false) { //private takip edilmiyor
+                                        Navigator.pushNamed(
+                                            context, '/otherUserProfile',
+                                            arguments: {
+                                              'email': doc.get('email'),
+                                              'email2': currentUser!.email,
+                                              'username2': currentUser!.username,
+                                            });
+                                      }
+
+                                      print('button clicked');
+                                    },
                                   ),
                                   SizedBox(
                                     width: 30,

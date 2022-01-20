@@ -25,11 +25,61 @@ class useragreement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Agreement'),
+        title: Text('USER AGREEMENT'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Text('User agreement'),
+      body: SafeArea(
+
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children:[
+                  Center(
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
+                      radius: 100,
+                      backgroundColor: Colors.black,
+                    ),
+                  ),
+                  Divider(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Text(
+                      'ONLY AGREEMENT',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+
+                        fontSize: 24,
+                        color: const Color(0xFF757575),
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Text(
+                      'Make your pet life happy. Be kind to animals',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF757575),
+                        letterSpacing: -1.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

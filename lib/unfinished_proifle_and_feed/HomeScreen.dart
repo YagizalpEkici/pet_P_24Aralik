@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pet_project/firestore_related/users.dart';
 import 'package:pet_project/firestore_related/posts.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/mainfeedpost.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
 //import 'package:pet_project/unfinished_proifle_and_feed/post.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
@@ -46,12 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-
-  String password="";
-  String name="";
-  String surname="";
-  String petName="";
-  String sex="";
+  String password = "";
+  String name = "";
+  String surname = "";
+  String petName = "";
+  String sex = "";
   List<dynamic> followers = [];
   List<dynamic> following = [];
   String bio = "",
@@ -60,9 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
       photoUrl = "",
       birthYear = "";
   List<dynamic> postsUser = [];
-  bool profType=true;
+  bool profType = true;
   List<dynamic> posts = [];
-  String email ="";
+  String email = "";
 
   DateTime? date;
   String postPhotoURL = "";
@@ -89,30 +89,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
     setState(() {
       username = x.docs[0]['username'];
-      password=x.docs[0]['password'];
-      name=x.docs[0]['name'];
-      surname=x.docs[0]['surname'];
+      password = x.docs[0]['password'];
+      name = x.docs[0]['name'];
+      surname = x.docs[0]['surname'];
       followers = x.docs[0]['followers'];
       following = x.docs[0]['following'];
-      sex=x.docs[0]['sex'];
-      petName=x.docs[0]['petName'];
+      sex = x.docs[0]['sex'];
+      petName = x.docs[0]['petName'];
       photoUrl = x.docs[0]['photoUrl'];
       bio = x.docs[0]['bio'];
       breed = x.docs[0]['breed'];
       birthYear = x.docs[0]['birthYear'];
-      email=x.docs[0]['email'];
-      posts=x.docs[0]['posts'];
-      profType=x.docs[0]['profType'];
-
+      email = x.docs[0]['email'];
+      posts = x.docs[0]['posts'];
+      profType = x.docs[0]['profType'];
     });
   }
+
   bool feedLoading = true;
   int postsSize = 0;
 
   final db = FirebaseFirestore.instance;
 
   void _loadUserProf() async {
-
     var profPosts = await FirebaseFirestore.instance
         .collection('posts')
         .get();
@@ -120,13 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
     postsSize = profPosts.size;
     username = profPosts.docs[0]['username'];
     pid = profPosts.docs[0]['pid'];
-    date= DateTime.fromMillisecondsSinceEpoch(profPosts.docs[0]['date'].seconds * 1000);
-    photoUrl= profPosts.docs[0]['userPhotoUrl'];
-    content= profPosts.docs[0]['content'];
-    email= profPosts.docs[0]['email'];
-    comments= profPosts.docs[0]['comments'];
-    likes= profPosts.docs[0]['likes'];
-    postPhotoURL= profPosts.docs[0]['postPhotoURL'];
+    date = DateTime.fromMillisecondsSinceEpoch(
+        profPosts.docs[0]['date'].seconds * 1000);
+    photoUrl = profPosts.docs[0]['userPhotoUrl'];
+    content = profPosts.docs[0]['content'];
+    email = profPosts.docs[0]['email'];
+    comments = profPosts.docs[0]['comments'];
+    likes = profPosts.docs[0]['likes'];
+    postPhotoURL = profPosts.docs[0]['postPhotoURL'];
 
 
     //posts..sort((a, b) => b.date.compareTo(a.date));
@@ -137,12 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-  updateForumData(pid, currEmail, updateLike) async{
-
-
-
-
-    List<dynamic>  currentlikeArray = [];
+  updateForumData(pid, currEmail, updateLike) async {
+    List<dynamic> currentlikeArray = [];
     var x = await FirebaseFirestore.instance
         .collection('posts')
         .where('pid', isEqualTo: pid)
@@ -150,7 +146,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       currentlikeArray = x.docs[0]['likes'];
       updateLike = currentlikeArray;
-
     });
 
     updateLike.add(currEmail);
@@ -168,17 +163,71 @@ class _HomeScreenState extends State<HomeScreen> {
     SnackBar(content: Text("Profile has been updated."));
   }
 
+
+  void _loadUserInfoForCurrent(currentEmail) async {
+    String password = "";
+    String name = "";
+    String surname = "";
+    String petName = "";
+    String sex = "";
+    List<dynamic> followers = [];
+    List<dynamic> following = [];
+    String bio = "",
+        username = "",
+        breed = "",
+        photoUrl = "",
+        birthYear = "";
+    List<dynamic> postsUser = [];
+    bool profType = true;
+    List<dynamic> posts = [];
+    String email = "";
+
+    DateTime? date;
+    String postPhotoURL = "";
+    List<dynamic> comments = [];
+    List<dynamic> likes = [];
+    String content = "";
+    String pid = "";
+
+
+    FirebaseAuth _auth;
+    User? _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+    var x = await FirebaseFirestore.instance
+        .collection('user')
+        .where('email', isEqualTo: currentEmail)
+        .get();
+
+    setState(() {
+      username = x.docs[0]['username'];
+      password = x.docs[0]['password'];
+      name = x.docs[0]['name'];
+      surname = x.docs[0]['surname'];
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      sex = x.docs[0]['sex'];
+      petName = x.docs[0]['petName'];
+      photoUrl = x.docs[0]['photoUrl'];
+      bio = x.docs[0]['bio'];
+      breed = x.docs[0]['breed'];
+      birthYear = x.docs[0]['birthYear'];
+      email = x.docs[0]['email'];
+      posts = x.docs[0]['posts'];
+      profType = x.docs[0]['profType'];
+    });
+  }
+
+
   @override
   void initState() {
     super.initState();
     _loadUserInfo();
     _loadUserProf();
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     currentUser = user(
       username: username,
       name: name,
@@ -190,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bio: bio,
       photoUrl: photoUrl,
       profType: profType,
-      email:email,
+      email: email,
       petName: petName,
       birthYear: birthYear,
       sex: sex,
@@ -200,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'FEED PAGE' ,
+            'FEED PAGE',
           ),
           centerTitle: true,
         ),
@@ -232,14 +281,38 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 600,
                     child: ListView(
                       children: snapshot.data!.docs.map((doc) {
-                        updateLike=doc.get('likes');
-                        if(currentUser!.following.contains(doc.get(('email'))) || doc.get('email') == currentUser!.email) {
+                        updateLike = doc.get('likes');
+                        if (currentUser!.following.contains(
+                            doc.get(('email'))) ||
+                            doc.get('email') == currentUser!.email) {
                           return Card(
                             clipBehavior: Clip.antiAlias,
                             child: Column(
                               children: [
                                 ListTile(
-                                  leading: Icon(Icons.person),
+                                  leading: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: Image.network(
+                                        'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      if (currentUser!.email == doc.get('email')) {
+                                        Navigator.push(context, new MaterialPageRoute(
+                                            builder: (context) => new profilePage())
+                                        );
+                                      }
+                                      else {
+                                        Navigator.pushNamed(
+                                            context, '/otherUserProfile',
+                                            arguments: {
+                                              'email': doc.get('email'),
+                                              'email2': currentUser!.email,
+                                              'username2': currentUser!.username
+                                            });
+                                      }
+                                      print('button clicked');
+                                    },
+                                  ),
                                   title: Text(
                                     doc.get('username'),
                                     style: TextStyle(
@@ -273,16 +346,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     ElevatedButton.icon(
                                       style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
                                           RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(18),
+                                            borderRadius: BorderRadius.circular(
+                                                18),
                                           ),
                                         ),
                                       ),
                                       icon: Icon(Icons.thumb_up),
                                       onPressed: () {
-                                        if(!doc.get('likes').contains(currentUser!.email)){
-                                          updateForumData(doc.get('pid'), currentUser!.email, updateLike);
+                                        if (!doc.get('likes').contains(currentUser!.email)) {
+                                          updateForumData(doc.get('pid'),
+                                              currentUser!.email, updateLike);
                                         }
                                         // Perform some action
 
@@ -293,16 +369,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                     ElevatedButton.icon(
                                       style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
                                           RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(18),
+                                            borderRadius: BorderRadius.circular(
+                                                18),
                                           ),
                                         ),
                                       ),
                                       icon: Icon(Icons.comment),
                                       onPressed: () {
-
-
+                                        Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid')});
                                         // Perform some action
                                       },
                                       label: const Text('Comment'),
@@ -324,125 +401,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           },
-        ),
-      ),
-    );
-  }
-
-  Widget feedposts() {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text(currentPost!.username),
-            subtitle: Text(
-              ('$date'),
-              style: TextStyle(color: Colors.black.withOpacity(0.6)),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              currentPost!.content,
-              style: TextStyle(color: Colors.black.withOpacity(0.6)),
-            ),
-          ),
-
-          Image.asset('assets/image1.jpg'),
-          ButtonBar(
-            alignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton.icon(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                ),
-                icon: Icon(Icons.thumb_up),
-                onPressed: () {
-                  // Perform some action
-                },
-                label: const Text('Like'),
-              ),
-
-              ElevatedButton.icon(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                ),
-                icon: Icon(Icons.comment),
-                onPressed: () {
-                  // Perform some action
-                },
-                label: const Text('Comment'),
-              ),
-
-              ElevatedButton.icon(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                ),
-                icon: Icon(Icons.share),
-                onPressed: () {
-                  // Perform some action
-                },
-                label: const Text('Share'),
-
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-
-  Widget feedScreen() {
-    return Padding(
-      padding: Dimen.RegularPadding,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                ElevatedButton.icon(onPressed: () {
-
-                },
-                  icon: Icon(Icons.add_photo_alternate),
-                  label: Text('Add Photo'),
-                ),
-                SizedBox(
-                  width: 9,
-                ),
-                ElevatedButton.icon(onPressed: () {
-
-                },
-                  icon: Icon(Icons.add_a_photo),
-                  label: Text('Take Photo'),
-                ),
-                SizedBox(
-                  width: 9,
-                ),
-                ElevatedButton.icon(onPressed: () {
-
-                },
-                  icon: Icon(Icons.send),
-                  label: Text('Status'),
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );

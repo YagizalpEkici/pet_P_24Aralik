@@ -2,7 +2,9 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/profileAppBarPages/editProfile.dart';
 import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
+import 'package:pet_project/routes/commentPage.dart';
 import 'package:pet_project/routes/forumPage.dart';
+import 'package:pet_project/routes/generateComment.dart';
 import 'package:pet_project/routes/generateForum.dart';
 import 'package:pet_project/routes/otherUserProfile.dart';
 
@@ -166,6 +168,8 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/editProfile': (context) => editProfile(),
         '/createPetProfile': (context) => createPet(),
         '/generateForum': (context) => generateForum(),
+        '/generateComment': (context) => generateComment(),
+        '/CommentPage': (context) => CommentPage(),
         '/forumPage': (context) => forumPage(),
         '/notifications': (context) => notifications(),
         '/notification': (context) => notifications(),
