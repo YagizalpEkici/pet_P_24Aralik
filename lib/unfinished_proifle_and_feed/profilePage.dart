@@ -8,6 +8,9 @@ import 'package:pet_project/firestore_related/posts.dart';
 
 import 'package:pet_project/unfinished_proifle_and_feed/navigation_drawer_widget.dart';
 
+import 'followerListPage.dart';
+import 'followingListPage.dart';
+
 
 class profilePage extends StatefulWidget {
   const profilePage({Key? key}) : super(key: key);
@@ -26,6 +29,23 @@ class _profilePageState extends State<profilePage> {
 
   void friendshipRequests() {
     Navigator.pushNamed(context, '/friendshipRequests');
+  }
+
+  void followerListPage(followers) {
+    Navigator.pushNamed(context, '/followerListPage', arguments:followers);
+  }
+
+  void followingListPage( List<dynamic> following) {
+
+    //Navigator.of(context).push(MaterialPageRoute(builder:(context)=>followingListPage(following)));
+
+    /*List<dynamic> listToSend = following;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => followingListPage(following: listToSend,),
+        ));*/
+    //Navigator.pushNamed(context, '/followingListPage', arguments:following);
   }
 
   String password="";
@@ -125,59 +145,6 @@ class _profilePageState extends State<profilePage> {
     });
   }
 
-/*
-  void _loadUserProf() async {
-
-    FirebaseAuth _auth;
-    User? _user;
-    _auth = FirebaseAuth.instance;
-    _user = _auth.currentUser;
-
-    var x = await FirebaseFirestore.instance
-        .collection('user')
-        .where('email', isEqualTo: _user?.email)
-        .get();
-
-    username = x.docs[0]['username'];
-    followers = x.docs[0]['followers'];
-    following = x.docs[0]['following'];
-    photoUrl = x.docs[0]['photoUrl'];
-    bio = x.docs[0]['bio'];
-    profType = x.docs[0]['profType'];
-
-    var profPosts = await FirebaseFirestore.instance
-        .collection('posts')
-        .where('email', isEqualTo: _user?.email)
-        .get();
-
-    postsSize = profPosts.size;
-    profPosts.docs.forEach((doc) =>
-    {
-      posts.add(
-          Post(
-              username: doc['username'],
-              userPhotoUrl: doc['userPhotoUrl'],
-              postPhotoURL: doc['postPhotoURL'],
-              email: doc['email'],
-              pid: doc['pid'],
-              content: doc['content'],
-              date: DateTime.fromMillisecondsSinceEpoch(doc['date'].seconds * 1000),
-              likes: doc['likes'],
-              comments: doc['comments'],
-
-              isLiked: doc['likes'].contains(_user?.email) ? true : false //TODO: error olabilir
-          )
-      )
-    });
-
-    posts..sort((a, b) => b.date.compareTo(a.date));
-    setState(() {
-      print("its in");
-      feedLoading = false;
-    });
-  }
-
- */
   final db = FirebaseFirestore.instance;
   @override
   void initState() {
@@ -270,9 +237,8 @@ class _profilePageState extends State<profilePage> {
 
                                   ],
                                 ),
-                                Chip(
-                                  label:
-                                  Container(
+                                InputChip(
+                                  label: Container(
                                     child: Text(
                                       '${followers.length}',
                                       textAlign: TextAlign.center,
@@ -280,6 +246,13 @@ class _profilePageState extends State<profilePage> {
                                     width: 80,
                                     height: 20,
                                   ),
+                                  onPressed: ()
+                                  {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PasswordRoute(currentUser!.followers,)));
+                                  },
                                 ),
                                 SizedBox(height: 15,),
                                 Row(
@@ -327,9 +300,8 @@ class _profilePageState extends State<profilePage> {
                                       ),),
                                   ],
                                 ),
-                                Chip(
-                                  label:
-                                  Container(
+                                InputChip(
+                                  label: Container(
                                     child: Text(
                                       '${following.length}',
                                       textAlign: TextAlign.center,
@@ -337,6 +309,13 @@ class _profilePageState extends State<profilePage> {
                                     width: 80,
                                     height: 20,
                                   ),
+                                  onPressed: ()
+                                  {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PasswordRouteFollowing(currentUser!.following,)));
+                                  },
                                 ),
                                 SizedBox(height: 15,),
                                 Row(
