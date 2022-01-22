@@ -16,7 +16,8 @@ class _CommentPageState extends State<CommentPage> {
 
 
   void buttonPressed(postId) {
-    Navigator.pushNamed(context, '/generateComment', arguments: {'pid':postId});
+    final args2 = ModalRoute.of(context)!.settings.arguments as Map;
+    Navigator.pushNamed(context, '/generateComment', arguments: {'pid':postId, 'page':args2['page']});
   }
   String comment = "";
   String Commentemail = "";
@@ -66,8 +67,8 @@ class _CommentPageState extends State<CommentPage> {
     email= profPosts.docs[0]['email'];
     comments= profPosts.docs[0]['comments'];
     likes= profPosts.docs[0]['likes'];
-    postPhotoURL= profPosts.docs[0]['postPhotoURL'];
-
+    //postPhotoURL= profPosts.docs[0]['postPhotoURL'];
+    postPhotoURL = 'assets/image1.jpg';
 
     //posts..sort((a, b) => b.date.compareTo(a.date));
     setState(() {
@@ -97,7 +98,7 @@ class _CommentPageState extends State<CommentPage> {
       email: email,
       comments: comments,
       likes: likes,
-      postPhotoURL: postPhotoURL,
+      postPhotoURL: 'assets/image1.jpg',
     );
 
     return Scaffold(
@@ -123,18 +124,8 @@ class _CommentPageState extends State<CommentPage> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Divider(thickness: 3,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                ),
                 SizedBox(
-                  height: 610,
+                  height: 690,
                   child: ListView(
                     children: snapshot.data!.docs.map((doc) {
                       if(currentPost!.comments.contains(doc.get('cid'))) {
@@ -143,7 +134,7 @@ class _CommentPageState extends State<CommentPage> {
                           shadowColor: Colors.amber,
                           elevation: 8,
                           child: Padding(
-                            padding: EdgeInsets.all(16.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -152,7 +143,7 @@ class _CommentPageState extends State<CommentPage> {
                                   children: [
                                     CircleAvatar(
                                       backgroundColor: Colors.blue,
-                                      radius: 30,
+                                      radius: 25,
                                       backgroundImage: NetworkImage('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
                                     ),
                                     SizedBox(
@@ -169,11 +160,15 @@ class _CommentPageState extends State<CommentPage> {
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 15,
+                                  height: 5,
+                                ),
+                                Divider(thickness: 1,color: Colors.black,),
+                                SizedBox(
+                                  height: 5,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
-                                  child: Row(
+                                  child: Wrap(
                                     children: [
                                       Text(
                                         doc.get('comment'),

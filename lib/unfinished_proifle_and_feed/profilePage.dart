@@ -75,6 +75,8 @@ class _profilePageState extends State<profilePage> {
   user? currentUser;
   Post? currentPost;
 
+  String page = "profile";
+
   List<dynamic> updateLike = [];
 
   void _loadUserInfo() async {
@@ -493,7 +495,7 @@ class _profilePageState extends State<profilePage> {
                                     ),
                                     icon: Icon(Icons.comment),
                                     onPressed: () {
-                                      Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid')});
+                                      Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid'), 'page':page});
                                       // Perform some action
                                     },
                                     label: const Text('Comment'),

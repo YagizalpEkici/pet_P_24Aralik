@@ -21,6 +21,7 @@ class _generateForumState extends State<generateForum> {
   String description = "";
   String fid = "";
   int like = 0;
+  String usermail = "";
 
   String id = uuid.v4();
 
@@ -243,6 +244,7 @@ class _generateForumState extends State<generateForum> {
                                               fid: id,
                                               username: username,
                                               photo: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
+                                              usermail: currentUser!.email,
                                             );
                                             addForum(fUser);
                                             pageDirection();

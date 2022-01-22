@@ -7,6 +7,7 @@ class forum {
   String fid;
   String username;
   String photo;
+  String usermail;
 
 
   forum(
@@ -15,6 +16,7 @@ class forum {
         required this.like,
         required this.fid,
         required this.username,
+        required this.usermail,
         required this.photo,
 
       });
@@ -25,7 +27,8 @@ class forum {
         like = data['like'],
         fid = data['fid'],
         username = data['username'],
-        photo = data['photo'];
+        photo = data['photo'],
+        usermail = data['usermail'];
 
 
   factory forum.fromDocument(DocumentSnapshot doc) {
@@ -36,6 +39,7 @@ class forum {
       fid: doc['fid'],
       username: doc['username'],
       photo: doc['photo'],
+      usermail: doc['usermail'],
     );
   }
 
@@ -47,7 +51,8 @@ class forum {
       'like': like,
       'fid': fid,
       'username': username,
-      'photo': photo
+      'photo': photo,
+      'usermail' :usermail
     };
   }
 }

@@ -16,15 +16,15 @@ import 'package:pet_project/unfinished_proifle_and_feed/navigation_drawer_widget
 import 'package:uuid/uuid.dart';
 var uuid = Uuid();
 
-class otherprofilePage extends StatefulWidget {
-  const otherprofilePage({Key? key}) : super(key: key);
+class otherUserProfile extends StatefulWidget {
+  const otherUserProfile({Key? key}) : super(key: key);
 
 
   @override
-  _otherprofilePageState createState() => _otherprofilePageState();
+  _otherUserProfileState createState() => _otherUserProfileState();
 }
 
-class _otherprofilePageState extends State<otherprofilePage> {
+class _otherUserProfileState extends State<otherUserProfile> {
 
   int currentIndex = 0;
   void editProfile() {

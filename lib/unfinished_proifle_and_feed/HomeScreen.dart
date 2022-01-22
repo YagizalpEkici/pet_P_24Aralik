@@ -76,6 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<dynamic> updateLike = [];
 
+  String page = "home";
+
 
   void _loadUserInfo() async {
     FirebaseAuth _auth;
@@ -297,9 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.white,
                                     onPressed: () {
                                       if (currentUser!.email == doc.get('email')) {
-                                        Navigator.push(context, new MaterialPageRoute(
-                                            builder: (context) => new profilePage())
-                                        );
+                                        Navigator.pushNamed(context, '/profilePage');
                                       }
                                       else {
                                         Navigator.pushNamed(
@@ -330,13 +330,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    doc.get('content'),
-                                    style: TextStyle(
-                                      color: Colors.black.withOpacity(0.6),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                  child: Wrap(
+                                    children: [
+                                      Text(
+                                        doc.get('content'),
+                                        style: TextStyle(
+                                          color: Colors.black.withOpacity(0.6),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 Image.asset('assets/image1.jpg'),
@@ -379,7 +383,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       icon: Icon(Icons.comment),
                                       onPressed: () {
-                                        Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid')});
+                                        Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid'), 'page':page});
                                         // Perform some action
                                       },
                                       label: const Text('Comment'),

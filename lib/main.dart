@@ -15,6 +15,8 @@ import 'package:pet_project/unfinished_proifle_and_feed/changepassword.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/notification.dart';
 
 import 'package:pet_project/routes/loginpage.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/privateOtherProfile.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:pet_project/routes/sign_up_page.dart';
@@ -175,7 +177,9 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/notification': (context) => notifications(),
         '/changepassword': (context) => changepassword(),
         '/addphoto': (context) => addphoto(),
-        '/otherUserProfile': (context) => otherprofilePage(),
+        '/otherUserProfile': (context) => otherUserProfile(),
+        '/profilePage': (context) => profilePage(),
+        '/privateOtherProfile' : (context) => privateOtherProfile(),
 
       },
     )

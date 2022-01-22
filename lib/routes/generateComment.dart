@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pet_project/firestore_related/comments.dart';
 
 import 'package:pet_project/firestore_related/users.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/HomeScreen.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
 
 
 import 'package:uuid/uuid.dart';
@@ -55,7 +57,14 @@ class _generateCommentState extends State<generateComment> {
   user? currentUser;
 
   void pageDirection() {
-    Navigator.pushNamed(context, '/homePage');
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    print(args['page']);
+    if(args['page'] == 'home') {
+      Navigator.pushNamed(context, '/homePage');
+    }
+    else if(args['page'] == 'profile'){
+      Navigator.pushNamed(context, '/profilePage');
+    }
   }
 
   void _loadUserInfo() async {

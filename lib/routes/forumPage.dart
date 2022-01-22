@@ -122,7 +122,7 @@ class _forumPageState extends State<forumPage> {
         .where('fid', isEqualTo: fid)
         .get();
     setState(() {
-      currentlike = x.docs[0]['likes'];
+      currentlike = x.docs[0]['like'];
     });
     print(currentlike);
 
@@ -168,16 +168,6 @@ class _forumPageState extends State<forumPage> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Divider(thickness: 4,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                ),
                 SizedBox(
                   height: 610,
                   child: ListView(
@@ -200,12 +190,23 @@ class _forumPageState extends State<forumPage> {
                                         'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
                                     color: Colors.white,
                                     onPressed: () {
-                                      if (currentUser!.email == doc.get('email')) {
+                                      if (currentUser!.email == doc.get('usermail')) {
                                         Navigator.push(context, new MaterialPageRoute(
                                             builder: (context) => new profilePage())
                                         );
                                       }
+                                      else{
+                                        Navigator.pushNamed(
+                                            context, '/otherUserProfile',
+                                            arguments: {
+                                              'email': doc.get('usermail'),
+                                              'email2': currentUser!.email,
+                                              'username2': currentUser!.username,
+                                            });
+                                      }
+                                      /*
                                       else if(doc.get('followers').contains(currentUser!.email)){
+                                        print('1.else if');
                                         Navigator.pushNamed(
                                             context, '/otherUserProfile',
                                             arguments: {
@@ -215,6 +216,7 @@ class _forumPageState extends State<forumPage> {
                                             });
                                       }
                                       else if(!doc.get('followers').contains(currentUser!.email) && doc.get('profType') == true) { //private takip edilmiyor
+                                        print('2.else if');
                                         Navigator.pushNamed(
                                             context, '/otherUserProfile',
                                             arguments: {
@@ -224,6 +226,7 @@ class _forumPageState extends State<forumPage> {
                                             });
                                       }
                                       else if(!doc.get('followers').contains(currentUser!.email) && doc.get('profType') == false) { //private takip edilmiyor
+                                        print('3.else if');
                                         Navigator.pushNamed(
                                             context, '/otherUserProfile',
                                             arguments: {
@@ -232,6 +235,8 @@ class _forumPageState extends State<forumPage> {
                                               'username2': currentUser!.username,
                                             });
                                       }
+
+                                       */
 
                                       print('button clicked');
                                     },
@@ -263,12 +268,12 @@ class _forumPageState extends State<forumPage> {
                                   //style: kCardTextLabel,
                                 ),
                               ),
-                              Row(
+                              Wrap(
                                 children: [
                                   Text(
                                     doc.get('description'),
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black87,
                                     ),
