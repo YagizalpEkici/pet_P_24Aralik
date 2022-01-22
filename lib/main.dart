@@ -7,11 +7,14 @@ import 'package:pet_project/routes/forumPage.dart';
 import 'package:pet_project/routes/generateComment.dart';
 import 'package:pet_project/routes/generateForum.dart';
 import 'package:pet_project/routes/otherUserProfile.dart';
+import 'package:pet_project/routes/publicOtherProfile.dart';
 
 
 import 'package:pet_project/routes/walkthrough.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/addphoto.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/changepassword.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/followerListPage.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/followingListPage.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/notification.dart';
 
 import 'package:pet_project/routes/loginpage.dart';
@@ -177,9 +180,14 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/notification': (context) => notifications(),
         '/changepassword': (context) => changepassword(),
         '/addphoto': (context) => addphoto(),
-        '/otherUserProfile': (context) => otherUserProfile(),
-        '/profilePage': (context) => profilePage(),
+        '/otherUserProfile': (context) => otherprofilePage(),
+        //'/profilePage': (context) => profilePage(),
         '/privateOtherProfile' : (context) => privateOtherProfile(),
+        '/publicOtherProfile' : (context) => publicotherprofilePage(),
+        '/followerListPage': (context) => PasswordRoute(),
+        '/followingListPage': (context) => PasswordRouteFollowing(),
+
+
 
       },
     )

@@ -62,14 +62,15 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
   Post? currentPost;
 
 
-  void _loadUserInfo() async {
+  void _loadUserInfo(BuildContext context) async {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
     FirebaseAuth _auth;
     User? _user;
     _auth = FirebaseAuth.instance;
     _user = _auth.currentUser;
     var x = await FirebaseFirestore.instance
         .collection('user')
-        .where('email', isEqualTo: _user?.email)
+        .where('email', isEqualTo: args['email'])
         .get();
 
     setState(() {
@@ -232,12 +233,18 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
   @override
   void initState() {
     super.initState();
-    _loadUserInfo();
-    _loadUserProf();
+    //_loadUserInfo();
+    //_loadUserProf();
   }
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as Map;
+    _loadUserInfo(context);
+
     currentUser = user(
       username: username,
       name: name,
@@ -460,65 +467,72 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        SizedBox(width: 17,),
-                        ElevatedButton(onPressed: (){},
-                          child: Text('Message'),),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
-                          child: Card(
-                            margin: EdgeInsets.fromLTRB(58, 8, 70, 8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),),
-                            color: Colors.grey[300],
-                            elevation: 8,
-                            child: Column(
-                              children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+                      child: Card(
+                        margin: EdgeInsets.fromLTRB(58, 8, 70, 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),),
+                        color: Colors.grey[300],
+                        elevation: 8,
+                        child: Column(
+                          children: [
 
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    '${bio}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                '${bio}',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
 
-                                    ),
-                                  ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                        SizedBox(width: 0,),
-                        ElevatedButton(onPressed: ()async{
-
-                          followClass newfollow = followClass(
-                              senderMail: email,
-                              senderusername: username,
-                              userMail: '',
-                              pid: id
-                          );
-                          notifClass newnotif = notifClass(
-                              Photoid: '',
-                              userName: '',
-                              type: 'follow',
-                              userMail: '',
-                              senderMail: email,
-                              pid: id,
-                              sendername: username);
-
-                          addFollow(newfollow);
-                          addNotif(newnotif);
-                        },
-                          child: Text('Follow'),)
-                      ],
+                      ),
                     ),
                   ],
                 ),
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //SizedBox(width: 17,),
+                ElevatedButton(onPressed: () {},
+                  child: Text('Message'),),
+
+                SizedBox(width: 0,),
+                ElevatedButton(
+                  onPressed: () {
+                    /*
+            }
+
+                      followClass newfollow = followClass(
+                          senderMail: args['email2'],
+                          senderusername: args['username2'],
+                          userMail: email,
+                          pid: id
+                      );
+                      notifClass newnotif = notifClass(
+                          Photoid: '',
+                          userName: '',
+                          type: 'follow',
+                          userMail: email,
+                          senderMail: args['email2'],
+                          pid: id,
+                          sendername: args['username2']);
+
+                      addFollow(newfollow);
+                      addNotif(newnotif);
+                      */
+
+                  },
+                  child: Text('follow'),)
+              ],
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

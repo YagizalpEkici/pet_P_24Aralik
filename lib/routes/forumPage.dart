@@ -39,6 +39,24 @@ class _forumPageState extends State<forumPage> {
   List<dynamic> posts = [];
   String email = "";
 
+  String username2  = "";
+  String password2 = "";
+  String name2 = "";
+  String surname2 = "";
+  String petName2 = "";
+  String sex2 = "";
+  List<dynamic> followers2 = [];
+  List<dynamic> following2 = [];
+  String bio2 = "",
+      usernameCurr2 = "",
+      breed2 = "",
+      photoUrl2 = "",
+      birthYear2 = "";
+  List<dynamic> postsUser2 = [];
+  bool profType2 = true;
+  List<dynamic> posts2 = [];
+  String email2 = "";
+
   DateTime? date;
   String postPhotoURL = "";
   List<dynamic> comments = [];
@@ -81,8 +99,35 @@ class _forumPageState extends State<forumPage> {
     });
   }
 
+  void _loadotherUserInfo(usermail) async {
+    FirebaseAuth _auth;
+    User? _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser;
+    var x = await FirebaseFirestore.instance
+        .collection('user')
+        .where('email', isEqualTo: usermail)
+        .get();
 
+    setState(() {
+      username2 = x.docs[0]['username'];
+      password2=x.docs[0]['password'];
+      name2=x.docs[0]['name'];
+      surname2=x.docs[0]['surname'];
+      followers2 = x.docs[0]['followers'];
+      following2 = x.docs[0]['following'];
+      sex2=x.docs[0]['sex'];
+      petName2=x.docs[0]['petName'];
+      photoUrl2 = x.docs[0]['photoUrl'];
+      bio2 = x.docs[0]['bio'];
+      breed2 = x.docs[0]['breed'];
+      birthYear2 = x.docs[0]['birthYear'];
+      email2=x.docs[0]['email'];
+      posts2=x.docs[0]['posts'];
+      profType2=x.docs[0]['profType'];
 
+    });
+  }
 
   void buttonPressed() {
     Navigator.pushNamed(context, '/generateForum');
@@ -94,6 +139,7 @@ class _forumPageState extends State<forumPage> {
 
   String username = "";
   String photo="";
+  String usermail = "";
 
   void _loadForumInfo() async {
     FirebaseAuth _auth;
@@ -111,8 +157,12 @@ class _forumPageState extends State<forumPage> {
       like=x.docs[0]['like'];
       photo = x.docs[0]['photo'];
       fid = x.docs[0]['fid'];
+      usermail = x.docs[0]['usermail'];
+
     });
   }
+
+
   final db = FirebaseFirestore.instance;
 
   updateForumData(fid) async{
@@ -143,10 +193,28 @@ class _forumPageState extends State<forumPage> {
   void initState() {
     super.initState();
     _loadForumInfo();
+    _loadUserInfo();
   }
 
   @override
   Widget build(BuildContext context) {
+    currentUser = user(
+      username: usernameCurr,
+      name: name,
+      surname: surname,
+      followers: followers,
+      following: following,
+      password: password,
+      posts: posts,
+      bio: bio,
+      photoUrl: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
+      profType: profType,
+      email:email,
+      petName: petName,
+      birthYear: birthYear,
+      sex: sex,
+      breed: breed,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -195,7 +263,10 @@ class _forumPageState extends State<forumPage> {
                                             builder: (context) => new profilePage())
                                         );
                                       }
-                                      else{
+
+                                      else if(currentUser!.followers.contains(doc.get('usermail'))){
+                                        print(currentUser!.email);
+                                        print(doc.get('usermail'));
                                         Navigator.pushNamed(
                                             context, '/otherUserProfile',
                                             arguments: {
@@ -204,39 +275,29 @@ class _forumPageState extends State<forumPage> {
                                               'username2': currentUser!.username,
                                             });
                                       }
-                                      /*
-                                      else if(doc.get('followers').contains(currentUser!.email)){
-                                        print('1.else if');
-                                        Navigator.pushNamed(
-                                            context, '/otherUserProfile',
-                                            arguments: {
-                                              'email': doc.get('email'),
-                                              'email2': currentUser!.email,
-                                              'username2': currentUser!.username,
-                                            });
+                                      else if(!currentUser!.followers.contains(doc.get('usermail'))) { //private takip edilmiyor
+                                        //print('2.else if');
+                                        _loadotherUserInfo(doc.get('usermail'));
+                                        if(profType2 == true) {
+                                          Navigator.pushNamed(
+                                              context, '/privateOtherProfile',
+                                              arguments: {
+                                                'email': doc.get('usermail'),
+                                                'email2': currentUser!.email,
+                                                'username2': currentUser!
+                                                    .username,
+                                              });
+                                        }
+                                        else {
+                                          Navigator.pushNamed(
+                                              context, '/publicOtherProfile',
+                                              arguments: {
+                                                'email': doc.get('usermail'),
+                                                'email2': currentUser!.email,
+                                                'username2': currentUser!.username,
+                                              });
+                                        }
                                       }
-                                      else if(!doc.get('followers').contains(currentUser!.email) && doc.get('profType') == true) { //private takip edilmiyor
-                                        print('2.else if');
-                                        Navigator.pushNamed(
-                                            context, '/otherUserProfile',
-                                            arguments: {
-                                              'email': doc.get('email'),
-                                              'email2': currentUser!.email,
-                                              'username2': currentUser!.username,
-                                            });
-                                      }
-                                      else if(!doc.get('followers').contains(currentUser!.email) && doc.get('profType') == false) { //private takip edilmiyor
-                                        print('3.else if');
-                                        Navigator.pushNamed(
-                                            context, '/otherUserProfile',
-                                            arguments: {
-                                              'email': doc.get('email'),
-                                              'email2': currentUser!.email,
-                                              'username2': currentUser!.username,
-                                            });
-                                      }
-
-                                       */
 
                                       print('button clicked');
                                     },

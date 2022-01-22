@@ -9,8 +9,7 @@ import 'package:pet_project/firestore_related/users.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
 
 class PasswordRouteFollowing extends StatefulWidget {
-  final List<dynamic> followingList;//if you have multiple values add here
-  PasswordRouteFollowing(this.followingList);//add also..example this.abc,this...
+
 
   @override
   State<StatefulWidget> createState() => _PasswordRouteFollowing();
@@ -131,6 +130,7 @@ class _PasswordRouteFollowing extends State<PasswordRouteFollowing> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
     currentUser = user(
       username: username,
       name: name,
@@ -175,7 +175,7 @@ class _PasswordRouteFollowing extends State<PasswordRouteFollowing> {
           else
             return ListView(
               children: snapshot.data!.docs.map((doc) {
-                if(currentUser!.following.contains(doc.get(('email')))) {
+                if(args['followingList'].contains(doc.get(('email')))) {
                   return Card(
                     clipBehavior: Clip.antiAlias,
                     child: Column(
@@ -191,7 +191,25 @@ class _PasswordRouteFollowing extends State<PasswordRouteFollowing> {
                                 icon: Image.network('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
                                 color: Colors.white,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/otherUserProfile', arguments: {'email':doc.get('email'), 'email2':currentUser!.email, 'username2':currentUser!.username});
+                                  print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@q');
+                                  print(doc.get('email'));
+                                  print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@q');
+                                  print(currentUser!.email);
+
+                                  if(currentUser!.email == doc.get('email')){
+                                    Navigator.push(context, new MaterialPageRoute(
+                                        builder: (context) => new profilePage())
+                                    );
+                                  }
+                                  else {
+                                    Navigator.pushNamed(
+                                        context, '/otherUserProfile',
+                                        arguments: {
+                                          'email': doc.get('email'),
+                                          'email2': currentUser!.email,
+                                          'username2': currentUser!.username
+                                        });
+                                  }
                                   print('button clicked');
                                 },
                               ),
@@ -225,27 +243,7 @@ class _PasswordRouteFollowing extends State<PasswordRouteFollowing> {
     );
 
   }
-  Widget mylist(int index, String photoUrl) {
-    if (widget.followingList.isNotEmpty) {
-      return Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            Image.asset(photoUrl),
 
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text(widget.followingList[index]),
-            ),
-
-          ],
-        ),
-      );
-    }
-    else {
-      return Card();
-    }
-  }
 }
 
 

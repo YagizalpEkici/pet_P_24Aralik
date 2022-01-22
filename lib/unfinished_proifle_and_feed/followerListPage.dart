@@ -7,11 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:pet_project/firestore_related/posts.dart';
 import 'package:pet_project/firestore_related/users.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
-import 'package:pet_project/routes/otherUserProfile.dart';
+
 
 class PasswordRoute extends StatefulWidget {
-  final List<dynamic> followingList;//if you have multiple values add here
-  PasswordRoute(this.followingList);//add also..example this.abc,this...
+
 
   @override
   State<StatefulWidget> createState() => _PasswordPageState();
@@ -126,6 +125,9 @@ class _PasswordPageState extends State<PasswordRoute> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    print('sarp');
+
     currentUser = user(
       username: username,
       name: name,
@@ -170,8 +172,7 @@ class _PasswordPageState extends State<PasswordRoute> {
           else
             return ListView(
               children: snapshot.data!.docs.map((doc) {
-                if(currentUser!.followers.contains(doc.get(('email')))) {
-                  print(currentUser!.following[0]);
+                if(args['followerList'].contains(doc.get(('email')))) {
                   return Card(
                     clipBehavior: Clip.antiAlias,
                     child: Column(
@@ -187,8 +188,22 @@ class _PasswordPageState extends State<PasswordRoute> {
                                 icon: Image.network('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
                                 color: Colors.white,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/otherUserProfile', arguments: {'email':doc.get('email'), 'email2':currentUser!.email, 'username2':username});
+                                  if(currentUser!.email == doc.get('email')){
+                                    Navigator.push(context, new MaterialPageRoute(
+                                        builder: (context) => new profilePage())
+                                    );
+                                  }
+                                  else {
+                                    Navigator.pushNamed(
+                                        context, '/otherUserProfile',
+                                        arguments: {
+                                          'email': doc.get('email'),
+                                          'email2': currentUser!.email,
+                                          'username2': username
+                                        });
+                                  }
                                   print('button clicked');
+
                                 },
                               ),
                             ),
@@ -218,28 +233,7 @@ class _PasswordPageState extends State<PasswordRoute> {
         },
       ),
     );
-
-
-  }
-  Widget mylist(int index, String photoUrl) {
-    if (widget.followingList.isNotEmpty) {
-      return Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            Image.asset(photoUrl),
-
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text(widget.followingList[index]),
-            ),
-
-          ],
-        ),
-      );
-    }
-    else {
-      return Card();
-    }
   }
 }
+
+

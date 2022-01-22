@@ -18,15 +18,15 @@ import 'package:pet_project/unfinished_proifle_and_feed/navigation_drawer_widget
 import 'package:uuid/uuid.dart';
 var uuid = Uuid();
 
-class otherprofilePage extends StatefulWidget {
-  const otherprofilePage({Key? key}) : super(key: key);
+class publicotherprofilePage extends StatefulWidget {
+  const publicotherprofilePage({Key? key}) : super(key: key);
 
 
   @override
-  _otherprofilePageState createState() => _otherprofilePageState();
+  _publicotherprofilePageState createState() => _publicotherprofilePageState();
 }
 
-class _otherprofilePageState extends State<otherprofilePage> {
+class _publicotherprofilePageState extends State<publicotherprofilePage> {
 
   int currentIndex = 0;
   void editProfile() {
@@ -517,7 +517,7 @@ class _otherprofilePageState extends State<otherprofilePage> {
                       */
 
                       },
-                      child: Text('Unfollow'),)
+                      child: Text('follow'),)
                   ],
                 ),
                 Padding(

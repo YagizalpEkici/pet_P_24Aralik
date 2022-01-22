@@ -224,12 +224,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadUserInfo();
+
     _loadUserProf();
   }
 
   @override
   Widget build(BuildContext context) {
+    _loadUserInfo();
     currentUser = user(
       username: username,
       name: name,
@@ -298,19 +299,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                         'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
                                     color: Colors.white,
                                     onPressed: () {
-                                      if (currentUser!.email == doc.get('email')) {
-                                        Navigator.pushNamed(context, '/profilePage');
+
+                                      if (email == doc.get('email')) {
+                                        Navigator.push(context, new MaterialPageRoute(
+                                            builder: (context) => new profilePage())
+                                        );
                                       }
                                       else {
                                         Navigator.pushNamed(
                                             context, '/otherUserProfile',
                                             arguments: {
-                                              'email': doc.get('email'),
+                                              'email': doc['email'],
                                               'email2': currentUser!.email,
                                               'username2': currentUser!.username
                                             });
                                       }
-                                      print('button clicked');
+                                      print(doc.get('email'));
+                                      print(currentUser!.email);
+                                      print( currentUser!.username);
                                     },
                                   ),
                                   title: Text(
@@ -330,17 +336,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
-                                  child: Wrap(
-                                    children: [
-                                      Text(
-                                        doc.get('content'),
-                                        style: TextStyle(
-                                          color: Colors.black.withOpacity(0.6),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
+                                  child: Text(
+                                    doc.get('content'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.6),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                                 Image.asset('assets/image1.jpg'),

@@ -63,7 +63,13 @@ class _generateCommentState extends State<generateComment> {
       Navigator.pushNamed(context, '/homePage');
     }
     else if(args['page'] == 'profile'){
-      Navigator.pushNamed(context, '/profilePage');
+      Navigator.push(context, new MaterialPageRoute(
+          builder: (context) => new profilePage())
+      );
+
+    }
+    else if(args['page'] == 'otherProfile') {
+      Navigator.pushNamed(context, '/otherUserProfile');
     }
   }
 
