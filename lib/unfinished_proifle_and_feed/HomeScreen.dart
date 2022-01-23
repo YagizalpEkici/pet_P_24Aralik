@@ -251,11 +251,22 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'FEED PAGE',
+          title: Text('Pet Project'),
+          leading: GestureDetector(
+            onTap: (){
+              NavigationDrawerWidget();
+            },
+            child: Icon(Icons.menu),
           ),
+          backgroundColor: Colors.deepOrangeAccent,
           centerTitle: true,
+          actions: [
+            IconButton(onPressed: (){
+              Navigator.pushNamed(context, '/chat');
+            }, icon: Icon(Icons.chat)),
+          ],
         ),
+
 
         drawer: NavigationDrawerWidget(),
 

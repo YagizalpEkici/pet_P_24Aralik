@@ -210,14 +210,14 @@ class _profilePageState extends State<profilePage> {
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.deepOrangeAccent,
 
         title: Text(
           currentUser!.username,
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             letterSpacing: -1,
-            fontSize: 20,
+            fontSize: 24,
           ),
         ),
 
@@ -313,15 +313,18 @@ class _profilePageState extends State<profilePage> {
                               ],
 
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(14),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
-                                radius: 56,
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.pushNamed(context, '/profilepictureview');
+                              },
+                              child:Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: CircleAvatar(
+                                  radius: 70,
+                                  backgroundImage: NetworkImage('https://cdn-1.motorsport.com/images/amp/YpN8nVN0/s1000/sergio-perez-red-bull-racing-1.jpg'),
+                                ),
                               ),
-
                             ),
-
                             Column(
                               children: [
                                 Row(

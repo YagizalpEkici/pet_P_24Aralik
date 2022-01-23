@@ -27,6 +27,7 @@ class useragreement extends StatelessWidget {
       appBar: AppBar(
         title: Text('USER AGREEMENT'),
         centerTitle: true,
+        backgroundColor: Colors.pinkAccent,
       ),
       body: SafeArea(
 

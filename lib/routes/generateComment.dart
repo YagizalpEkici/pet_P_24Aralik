@@ -182,6 +182,7 @@ class _generateCommentState extends State<generateComment> {
           title: Text(
             'MAKE A COMMENT',
           ),
+          backgroundColor: Colors.deepOrangeAccent,
           centerTitle: true,
         ),
         body: SafeArea(

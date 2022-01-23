@@ -269,14 +269,14 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.deepOrangeAccent,
 
         title: Text(
           currentUser!.username,
           style: TextStyle(
             color: Colors.black,
             letterSpacing: -1,
-            fontSize: 20,
+            fontSize: 24,
           ),
         ),
 

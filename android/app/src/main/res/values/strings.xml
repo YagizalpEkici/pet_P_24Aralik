@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pet Project</string>
+    <string name="facebook_app_id">2989249351388465</string>
+    <string name="fb_login_protocol_scheme">fb2989249351388465</string>
+</resources>

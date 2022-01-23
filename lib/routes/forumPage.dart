@@ -227,7 +227,7 @@ class _forumPageState extends State<forumPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.deepOrangeAccent,
         automaticallyImplyLeading: false,
       ),
       body: StreamBuilder<QuerySnapshot>(

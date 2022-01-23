@@ -145,9 +145,10 @@ class _reSharePageState extends State<reSharePage> {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w800,
-            color: Colors.white30,
+            color: Colors.white,
           ),
         ),
+        backgroundColor: Colors.deepOrangeAccent,
         centerTitle: true,
       ),
       body: Padding(

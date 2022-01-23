@@ -132,6 +132,7 @@ class _generateForumState extends State<generateForum> {
           'CREATE A STATE',
         ),
         centerTitle: true,
+        backgroundColor: Colors.deepOrangeAccent,
       ),
         body: SafeArea(
             child : Padding(

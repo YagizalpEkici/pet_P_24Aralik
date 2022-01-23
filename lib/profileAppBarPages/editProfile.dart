@@ -119,7 +119,7 @@ class _editProfile extends State<editProfile> {
               color: Colors.black,
             ),
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.deepOrangeAccent,
           centerTitle: true,
         ),
         body: SafeArea(

@@ -142,6 +142,7 @@ class _notifications extends State<notifications> {
             title: const Text(title, style: TextStyle(fontWeight: FontWeight.bold),),
             leading: IconButton(icon: Icon(Icons.arrow_back),
               onPressed: ()=>Navigator.pop(context, false),),
+            backgroundColor: Colors.deepOrangeAccent,
           ),
           body: StreamBuilder<QuerySnapshot>(
             stream: db.collection('notification').snapshots(),

@@ -2,6 +2,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/profileAppBarPages/editProfile.dart';
 import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
+import 'package:pet_project/routes/chat/chat.dart';
 import 'package:pet_project/routes/commentPage.dart';
 import 'package:pet_project/routes/forumPage.dart';
 import 'package:pet_project/routes/generateComment.dart';
@@ -20,6 +21,7 @@ import 'package:pet_project/unfinished_proifle_and_feed/notification.dart';
 import 'package:pet_project/routes/loginpage.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/privateOtherProfile.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/profilepictureview.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/reSharePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:after_layout/after_layout.dart';
@@ -34,6 +36,8 @@ import 'package:pet_project/routes/homePage.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_project/routes/createPetProfile.dart';
 import 'package:pet_project/profileAppBarPages/friendshipRequests.dart';
+
+
 
 import 'firestore_related/users.dart';
 /*
@@ -182,12 +186,15 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/changepassword': (context) => changepassword(),
         '/addphoto': (context) => addphoto(),
         '/otherUserProfile': (context) => otherprofilePage(),
-        //'/profilePage': (context) => profilePage(),
         '/privateOtherProfile' : (context) => privateOtherProfile(),
         '/publicOtherProfile' : (context) => publicotherprofilePage(),
         '/followerListPage': (context) => PasswordRoute(),
         '/followingListPage': (context) => PasswordRouteFollowing(),
         '/reSharePage' :(context) => reSharePage(),
+        '/profilepictureview': (context) => ProfilePictureView(),
+        '/chat': (context) => Chat(),
+
+
 
       },
     )

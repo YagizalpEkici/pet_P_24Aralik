@@ -149,7 +149,7 @@ class _PasswordPageState extends State<PasswordRoute> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.deepOrangeAccent,
 
         title: Text(
           'FOLLOWERS',

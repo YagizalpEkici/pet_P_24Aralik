@@ -176,10 +176,11 @@ class _SearchPage extends State<SearchPage> {
     );
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.deepOrangeAccent,
         automaticallyImplyLeading: false,
         title: Text('Search a User'),
         centerTitle: true,
+
       ),
       body: Container(
         height: 300,

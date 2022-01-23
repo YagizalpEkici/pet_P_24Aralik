@@ -27,6 +27,7 @@ class communityrules extends StatelessWidget {
       appBar: AppBar(
         title: Text('COMMUNTIY RULES'),
         centerTitle: true,
+        backgroundColor: Colors.pinkAccent,
       ),
       body: SafeArea(
 

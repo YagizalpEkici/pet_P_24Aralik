@@ -115,7 +115,7 @@ class _CommentPageState extends State<CommentPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.deepOrangeAccent,
         automaticallyImplyLeading: false,
       ),
       body: StreamBuilder<QuerySnapshot>(
