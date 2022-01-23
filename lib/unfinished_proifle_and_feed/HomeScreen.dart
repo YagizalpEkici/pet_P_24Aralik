@@ -274,10 +274,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: Icon(Icons.add_photo_alternate),
                         label: Text('Add Photo'),
                       ),
-                      ElevatedButton.icon(onPressed: pickImageCamera,
-                        icon: Icon(Icons.add_a_photo),
-                        label: Text('Take Photo'),
-                      ),
                     ],
                   ),
                   SizedBox(
@@ -288,114 +284,307 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (currentUser!.following.contains(
                             doc.get(('email'))) ||
                             doc.get('email') == currentUser!.email) {
-                          return Card(
-                            clipBehavior: Clip.antiAlias,
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  leading: IconButton(
-                                    padding: EdgeInsets.zero,
-                                    icon: Image.network(
-                                        'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
-                                    color: Colors.white,
-                                    onPressed: () {
-
-                                      if (email == doc.get('email')) {
-                                        Navigator.push(context, new MaterialPageRoute(
-                                            builder: (context) => new profilePage())
-                                        );
-                                      }
-                                      else {
-                                        Navigator.pushNamed(
-                                            context, '/otherUserProfile',
-                                            arguments: {
-                                              'email': doc['email'],
-                                              'email2': currentUser!.email,
-                                              'username2': currentUser!.username
-                                            });
-                                      }
-                                      print(doc.get('email'));
-                                      print(currentUser!.email);
-                                      print( currentUser!.username);
-                                    },
-                                  ),
-                                  title: Text(
-                                    doc.get('username'),
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    ('26.12.2021'),
-                                    style: TextStyle(
-                                      color: Colors.black.withOpacity(0.6),
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    doc.get('content'),
-                                    style: TextStyle(
-                                      color: Colors.black.withOpacity(0.6),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Image.asset('assets/image1.jpg'),
-
-                                ButtonBar(
-                                  alignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    ElevatedButton.icon(
-                                      style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                18),
-                                          ),
-                                        ),
-                                      ),
-                                      icon: Icon(Icons.thumb_up),
+                          if(doc.get('email') != currentUser!.email) {
+                            return Card(
+                              clipBehavior: Clip.antiAlias,
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    leading: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Image.network(
+                                          'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
+                                      color: Colors.white,
                                       onPressed: () {
-                                        if (!doc.get('likes').contains(currentUser!.email)) {
-                                          updateForumData(doc.get('pid'),
-                                              currentUser!.email, updateLike);
+
+                                        if (email == doc.get('email')) {
+                                          Navigator.push(context, new MaterialPageRoute(
+                                              builder: (context) => new profilePage())
+                                          );
                                         }
-                                        // Perform some action
-
+                                        else {
+                                          Navigator.pushNamed(
+                                              context, '/otherUserProfile',
+                                              arguments: {
+                                                'email': doc['email'],
+                                                'email2': currentUser!.email,
+                                                'username2': currentUser!.username
+                                              });
+                                        }
+                                        print(doc.get('email'));
+                                        print(currentUser!.email);
+                                        print( currentUser!.username);
                                       },
-                                      label: Text('${updateLike.length}'),
                                     ),
+                                    title: Text(
+                                      doc.get('username'),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      ('26.12.2021'),
+                                      style: TextStyle(
+                                        color: Colors.black.withOpacity(0.6),
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(
+                                      doc.get('content'),
+                                      style: TextStyle(
+                                        color: Colors.black.withOpacity(0.6),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  Image.asset('assets/image1.jpg'),
 
-
-                                    ElevatedButton.icon(
-                                      style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                18),
+                                  ButtonBar(
+                                    alignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ElevatedButton.icon(
+                                        style: ButtonStyle(
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  14),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      icon: Icon(Icons.comment),
-                                      onPressed: () {
-                                        Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid'), 'page':page});
-                                        // Perform some action
-                                      },
-                                      label: const Text('Comment'),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                        icon: Icon(Icons.thumb_up),
+                                        onPressed: () {
+                                          if (!doc.get('likes').contains(currentUser!.email)) {
+                                            updateForumData(doc.get('pid'),
+                                                currentUser!.email, updateLike);
+                                          }
+                                          // Perform some action
 
-                          );
+                                        },
+                                        label: Text('${updateLike.length}'),
+                                      ),
+
+
+                                      ElevatedButton.icon(
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  14),
+                                            ),
+                                          ),
+                                        ),
+                                        icon: Icon(Icons.comment),
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid'), 'page':page});
+                                          // Perform some action
+                                        },
+                                        label: const Text(''),
+                                      ),
+
+                                      //deleteIfPostYours(currentUser!.email, doc.get('email'),doc.get('pid')),
+                                      ElevatedButton.icon(
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(14),
+                                            ),
+                                          ),
+                                        ),
+                                        icon: Icon(
+                                          Icons.report,
+                                        ),
+                                        onPressed: () async {
+                                          if(currentUser!.email == doc.get('email'))
+                                          {
+                                            List<dynamic> updatedPosts=[];
+
+                                            FirebaseAuth _auth;
+                                            User? _user;
+                                            _auth = FirebaseAuth.instance;
+                                            _user = _auth.currentUser;
+
+                                            var dbUserGetter = await FirebaseFirestore.instance.collection('user').where('email', isEqualTo: currentUser!.email).get();
+                                            updatedPosts = dbUserGetter.docs[0]['posts'];
+
+                                            updatedPosts.remove(doc.get('pid'));
+                                            FirebaseFirestore.instance
+                                                .collection('user')
+                                                .doc(_user?.email)
+                                                .update({
+                                              "posts": updatedPosts,
+                                            });
+
+                                            FirebaseFirestore.instance.collection('posts').doc(doc.get('pid')).delete();
+                                          }
+                                          else {
+                                            _showMyDialog();
+                                          }
+                                          // Perform some action
+                                        },
+                                        label: const Text(''),
+                                      ),
+
+                                      ElevatedButton.icon(
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(Colors.purpleAccent),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        ),
+                                        icon: Icon(Icons.share_outlined),
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, '/reSharePage', arguments: {'postPhotoURL': doc.get('postPhotoURL'), 'content':doc.get('content')});
+                                          // Perform some action
+                                        },
+                                        label: const Text('R'),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                          else {
+                            return Card(
+                              clipBehavior: Clip.antiAlias,
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    leading: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Image.network(
+                                          'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
+                                      color: Colors.white,
+                                      onPressed: () {
+
+                                        if (email == doc.get('email')) {
+                                          Navigator.push(context, new MaterialPageRoute(
+                                              builder: (context) => new profilePage())
+                                          );
+                                        }
+                                        else {
+                                          Navigator.pushNamed(
+                                              context, '/otherUserProfile',
+                                              arguments: {
+                                                'email': doc['email'],
+                                                'email2': currentUser!.email,
+                                                'username2': currentUser!.username
+                                              });
+                                        }
+                                        print(doc.get('email'));
+                                        print(currentUser!.email);
+                                        print( currentUser!.username);
+                                      },
+                                    ),
+                                    title: Text(
+                                      doc.get('username'),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      ('26.12.2021'),
+                                      style: TextStyle(
+                                        color: Colors.black.withOpacity(0.6),
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(
+                                      doc.get('content'),
+                                      style: TextStyle(
+                                        color: Colors.black.withOpacity(0.6),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  Image.asset('assets/image1.jpg'),
+
+                                  ButtonBar(
+                                    alignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ElevatedButton.icon(
+                                        style: ButtonStyle(
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  14),
+                                            ),
+                                          ),
+                                        ),
+                                        icon: Icon(Icons.thumb_up),
+                                        onPressed: () {
+                                          if (!doc.get('likes').contains(currentUser!.email)) {
+                                            updateForumData(doc.get('pid'),
+                                                currentUser!.email, updateLike);
+                                          }
+                                          // Perform some action
+
+                                        },
+                                        label: Text('${updateLike.length}'),
+                                      ),
+
+
+                                      ElevatedButton.icon(
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  14),
+                                            ),
+                                          ),
+                                        ),
+                                        icon: Icon(Icons.comment),
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid'), 'page':page});
+                                          // Perform some action
+                                        },
+                                        label: const Text(''),
+                                      ),
+
+                                      //deleteIfPostYours(currentUser!.email, doc.get('email'),doc.get('pid')),
+                                      ElevatedButton.icon(
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(14),
+                                            ),
+                                          ),
+                                        ),
+                                        icon: Icon(
+                                          Icons.delete_forever,
+                                        ),
+                                        onPressed: () async {
+
+                                          // Perform some action
+                                        },
+                                        label: const Text(''),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                         }
                         else {
                           return Text('');
@@ -410,5 +599,99 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('You can not delete the post that your are not owned.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('I understand'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  deleteIfPostYours(myEmail,postEmail,pid){
+    if(myEmail == postEmail){
+      return ElevatedButton.icon(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+          ),
+        ),
+        icon: Icon(
+          Icons.delete_forever,
+        ),
+        onPressed: () async {
+
+          List<dynamic> updatedPosts=[];
+
+          FirebaseAuth _auth;
+          User? _user;
+          _auth = FirebaseAuth.instance;
+          _user = _auth.currentUser;
+
+          var dbUserGetter = await FirebaseFirestore.instance.collection('user').where('email', isEqualTo: myEmail).get();
+          updatedPosts = dbUserGetter.docs[0]['posts'];
+
+          updatedPosts.remove(pid);
+          FirebaseFirestore.instance
+              .collection('user')
+              .doc(myEmail)
+              .update({
+            "posts": updatedPosts,
+          });
+
+          FirebaseFirestore.instance.collection('posts').doc(pid).delete();
+
+
+          // Perform some action
+        },
+        label: const Text('Delete'),
+      );
+    }
+    else{
+      return ElevatedButton.icon(
+
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+          ),
+        ),
+        icon: Icon(
+          Icons.report,
+        ),
+        onPressed: () async {
+
+
+
+          // Perform some action
+        },
+        label: const Text('Report'),
+      );
+    }
+
   }
 }

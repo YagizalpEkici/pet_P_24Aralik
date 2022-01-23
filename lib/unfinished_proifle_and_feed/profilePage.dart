@@ -422,6 +422,14 @@ class _profilePageState extends State<profilePage> {
                     ),
                   ),
                 ),
+                Text(
+                  'POSTS',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -491,6 +499,7 @@ class _profilePageState extends State<profilePage> {
 
                                   ElevatedButton.icon(
                                     style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
                                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(18),
@@ -502,7 +511,48 @@ class _profilePageState extends State<profilePage> {
                                       Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid'), 'page':page});
                                       // Perform some action
                                     },
-                                    label: const Text('Comment'),
+                                    label: const Text(''),
+                                  ),
+                                  ElevatedButton.icon(
+
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+
+
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(18),
+                                        ),
+                                      ),
+                                    ),
+                                    icon: Icon(
+                                      Icons.delete_forever,
+                                    ),
+
+                                    onPressed: () async {
+
+
+                                      List<dynamic> updatedPosts=[];
+                                      FirebaseAuth _auth;
+                                      User? _user;
+                                      _auth = FirebaseAuth.instance;
+                                      _user = _auth.currentUser;
+                                      var dbUserGetter = await FirebaseFirestore.instance.collection('user').where('email', isEqualTo: currentUser!.email).get();
+                                      updatedPosts = dbUserGetter.docs[0]['posts'];
+                                      updatedPosts.remove(doc.get('pid'));
+                                      FirebaseFirestore.instance
+                                          .collection('user')
+                                          .doc(_user?.email)
+                                          .update({
+                                        "posts": updatedPosts,
+                                      });
+
+                                      FirebaseFirestore.instance.collection('posts').doc(doc.get('pid')).delete();
+
+
+                                      // Perform some action
+                                    },
+                                    label: const Text(''),
                                   ),
                                 ],
                               ),
@@ -520,83 +570,6 @@ class _profilePageState extends State<profilePage> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget feedposts() {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text(username),
-            subtitle: Text(
-              ('$date'),
-              style: TextStyle(color: Colors.black.withOpacity(0.6)),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              content,
-              style: TextStyle(color: Colors.black.withOpacity(0.6)),
-            ),
-          ),
-
-          Image.asset('assets/image1.jpg'),
-          ButtonBar(
-            alignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton.icon(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                ),
-                icon: Icon(Icons.thumb_up),
-                onPressed: () {
-                  // Perform some action
-                },
-                label: const Text('Like'),
-              ),
-
-              ElevatedButton.icon(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                ),
-                icon: Icon(Icons.comment),
-                onPressed: () {
-                  // Perform some action
-                },
-                label: const Text('Comment'),
-              ),
-
-              ElevatedButton.icon(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                ),
-                icon: Icon(Icons.share),
-                onPressed: () {
-                  // Perform some action
-                },
-                label: const Text('Share'),
-
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

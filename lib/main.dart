@@ -20,6 +20,7 @@ import 'package:pet_project/unfinished_proifle_and_feed/notification.dart';
 import 'package:pet_project/routes/loginpage.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/privateOtherProfile.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/reSharePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:pet_project/routes/sign_up_page.dart';
@@ -186,8 +187,7 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/publicOtherProfile' : (context) => publicotherprofilePage(),
         '/followerListPage': (context) => PasswordRoute(),
         '/followingListPage': (context) => PasswordRouteFollowing(),
-
-
+        '/reSharePage' :(context) => reSharePage(),
 
       },
     )
