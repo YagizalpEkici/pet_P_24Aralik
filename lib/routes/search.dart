@@ -312,7 +312,8 @@ class _SearchPage extends State<SearchPage> {
                       padding: EdgeInsets.zero,
                       icon: Image.network('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
                       color: Colors.white,
-                      onPressed: () {
+                      onPressed: () async {
+                        var dbSearchGetter = await FirebaseFirestore.instance.collection('user').where('email',isEqualTo: searchUser!.email).get();
                         if(currentUser!.following.contains(mail)){
                           Navigator.pushNamed(context, '/otherUserProfile', arguments: {'email':mail, 'email2':mail2, 'username2':username2});
                         }
@@ -325,6 +326,9 @@ class _SearchPage extends State<SearchPage> {
                                 'username2': currentUser!
                                     .username,
                               });
+                        }
+                        else if(!dbSearchGetter.docs[0]['activation']){
+                          Navigator.pushNamed(context, '/deactive_account', arguments: {'email':mail, 'email2':mail2, 'username2':username2});
                         }
                         else {
                           Navigator.pushNamed(

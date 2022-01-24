@@ -387,6 +387,11 @@ class _loginState extends State<login> {
                                   _showMyDialog();
                                 }
                                 else {
+                                  var dbUserGetter = await FirebaseFirestore.instance.collection('user').where('email', isEqualTo: email).get();
+                                  if(!dbUserGetter.docs[0]['activation']){
+                                    FirebaseFirestore.instance.collection('user').doc(email).update(
+                                        {'activation': true});
+                                  }
                                   Navigator.pushNamed(context, '/homePage');
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Logging in')));
                                 }
