@@ -14,6 +14,7 @@ import 'package:pet_project/routes/publicOtherProfile.dart';
 import 'package:pet_project/routes/walkthrough.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/addphoto.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/changepassword.dart';
+import 'package:pet_project/unfinished_proifle_and_feed/deactive_account.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/followerListPage.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/followingListPage.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/notification.dart';
@@ -193,6 +194,7 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/reSharePage' :(context) => reSharePage(),
         '/profilepictureview': (context) => ProfilePictureView(),
         '/chat': (context) => Chat(),
+        '/deactive_account': (context) => deactiveOtherProfile(),
 
 
       },
