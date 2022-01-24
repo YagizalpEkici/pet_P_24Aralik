@@ -575,34 +575,31 @@ class _otherprofilePageState extends State<otherprofilePage> {
                                           RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
-                                              18),
+                                              14),
                                         ),
                                       ),
                                     ),
                                     icon: Icon(Icons.thumb_up),
                                     onPressed: () {
-                                      if (!doc.get('likes').contains(
-                                          currentUser!.email)) {
-                                        updateForumData(
-                                            doc.get('pid'), currentUser!.email,
-                                            updateLike);
+                                      if (!doc.get('likes').contains(currentUser!.email)) {
+                                        updateForumData(doc.get('pid'),
+                                            currentUser!.email, updateLike);
                                       }
                                       // Perform some action
 
                                     },
-                                    label: Text('${doc
-                                        .get('likes')
-                                        .length}'),
+                                    label: Text('${doc.get('likes').length}'),
                                   ),
 
 
                                   ElevatedButton.icon(
                                     style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
                                       shape: MaterialStateProperty.all<
                                           RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
-                                              18),
+                                              14),
                                         ),
                                       ),
                                     ),
@@ -611,7 +608,68 @@ class _otherprofilePageState extends State<otherprofilePage> {
                                       Navigator.pushNamed(context, '/CommentPage', arguments: {'pid': doc.get('pid'), 'page':page});
                                       // Perform some action
                                     },
-                                    label: const Text('Comment'),
+                                    label: const Text(''),
+                                  ),
+
+                                  //deleteIfPostYours(currentUser!.email, doc.get('email'),doc.get('pid')),
+                                  ElevatedButton.icon(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(14),
+                                        ),
+                                      ),
+                                    ),
+                                    icon: Icon(
+                                      Icons.report,
+                                    ),
+                                    onPressed: () async {
+                                      if(currentUser!.email == doc.get('email'))
+                                      {
+                                        List<dynamic> updatedPosts=[];
+
+                                        FirebaseAuth _auth;
+                                        User? _user;
+                                        _auth = FirebaseAuth.instance;
+                                        _user = _auth.currentUser;
+
+                                        var dbUserGetter = await FirebaseFirestore.instance.collection('user').where('email', isEqualTo: currentUser!.email).get();
+                                        updatedPosts = dbUserGetter.docs[0]['posts'];
+
+                                        updatedPosts.remove(doc.get('pid'));
+                                        FirebaseFirestore.instance
+                                            .collection('user')
+                                            .doc(_user?.email)
+                                            .update({
+                                          "posts": updatedPosts,
+                                        });
+
+                                        FirebaseFirestore.instance.collection('posts').doc(doc.get('pid')).delete();
+                                      }
+                                      else {
+                                        _showMyDialog();
+                                      }
+                                      // Perform some action
+                                    },
+                                    label: const Text(''),
+                                  ),
+
+                                  ElevatedButton.icon(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.purpleAccent),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                    icon: Icon(Icons.share_outlined),
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/reSharePage', arguments: {'postPhotoURL': doc.get('postPhotoURL'), 'content':doc.get('content')});
+                                      // Perform some action
+                                    },
+                                    label: const Text('R'),
                                   ),
                                 ],
                               ),
@@ -630,6 +688,32 @@ class _otherprofilePageState extends State<otherprofilePage> {
           );
         },
       ),
+    );
+  }
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('You can not delete the post that your are not owned.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('I understand'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

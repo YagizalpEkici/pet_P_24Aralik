@@ -250,14 +250,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     return SafeArea(
       child: Scaffold(
+        drawer: NavigationDrawerWidget(),
         appBar: AppBar(
           title: Text('Pet Project'),
-          leading: GestureDetector(
-            onTap: (){
-              NavigationDrawerWidget();
-            },
-            child: Icon(Icons.menu),
-          ),
+
+          //leading: GestureDetector(
+            //onTap: (){
+              //NavigationDrawerWidget();
+            //},
+            //child: Icon(Icons.menu),
+
           backgroundColor: Colors.deepOrangeAccent,
           centerTitle: true,
           actions: [
@@ -268,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
 
 
-        drawer: NavigationDrawerWidget(),
+        //drawer: NavigationDrawerWidget(),
 
         body: StreamBuilder<QuerySnapshot>(
           stream: db.collection('posts').snapshots(),

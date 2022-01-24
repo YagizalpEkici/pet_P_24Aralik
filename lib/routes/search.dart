@@ -269,7 +269,6 @@ class _SearchPage extends State<SearchPage> {
                             else {
                               print('Something wrong!');
                             }
-
                           },
                             icon: Icon(
                               Icons.search,
@@ -292,59 +291,82 @@ class _SearchPage extends State<SearchPage> {
       ),
     );
   }
+  Widget buildResultCard(username,petName,photoUrl,mail,mail2,username2,BuildContext context) {
+    print('inside widget');
+    if(check) {
+      return Card(
+        margin: EdgeInsets.symmetric(vertical: 8),
+        shadowColor: Colors.amber,
+        elevation: 8,
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    radius: 30,
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: Image.network('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
+                      color: Colors.white,
+                      onPressed: () {
+                        if(currentUser!.following.contains(mail)){
+                          Navigator.pushNamed(context, '/otherUserProfile', arguments: {'email':mail, 'email2':mail2, 'username2':username2});
+                        }
+                        else if(searchUser?.profType == true){
+                          Navigator.pushNamed(
+                              context, '/privateOtherProfile',
+                              arguments: {
+                                'email': mail,
+                                'email2': currentUser!.email,
+                                'username2': currentUser!
+                                    .username,
+                              });
+                        }
+                        else {
+                          Navigator.pushNamed(
+                              context, '/publicOtherProfile',
+                              arguments: {
+                                'email': mail,
+                                'email2': currentUser!.email,
+                                'username2': currentUser!.username,
+                              });
+                        }
+
+                        print('button clicked');
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    username + " - " + petName,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    else {
+      return Center(
+        child: Text('No User Found...'),
+      );
+    }
+  }
 }
 
-Widget buildResultCard(username,petName,photoUrl,mail,mail2,username2,BuildContext context) {
-  print('inside widget');
-  if(check) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      shadowColor: Colors.amber,
-      elevation: 8,
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  radius: 30,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    icon: Image.network('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/otherUserProfile', arguments: {'email':mail, 'email2':mail2, 'username2':username2});
-                      print('button clicked');
-                    },
-                  ),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  username + " - " + petName,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-  else {
-    return Center(
-      child: Text('No User Found...'),
-    );
-  }
-}
+
 
 
 
