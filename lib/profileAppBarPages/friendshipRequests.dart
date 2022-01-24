@@ -104,7 +104,35 @@ class _friendshipRequestsState extends State<friendshipRequests> {
         senderfollowing = dbSenderGetter.docs[0]['following'];
         if(check == 1) {
           senderfollowing.add(userMail);
+
+          FirebaseFirestore.instance
+              .collection('followStatus')
+              .doc(docid)
+              .update({
+            "followAccepted": true,
+            "pending": false,
+            "unfollow": true,
+            "followButtonInitial": false
+          });
+
+
         }
+
+        else{
+          print("xe girildi");
+          FirebaseFirestore.instance
+              .collection('followStatus')
+              .doc(docid)
+              .update({
+            "addedMail": "AAAAAAAAAAAAA",
+            "followAccepted": false,
+            "pending": false,
+            "unfollow": false,
+            "followButtonInitial": true
+          });
+        }
+
+
     });
     FirebaseAuth _auth;
     User? _user;
@@ -137,6 +165,9 @@ class _friendshipRequestsState extends State<friendshipRequests> {
         .update({
       "userMail": 'AAAAAAAAAAAAAAAAAAAAA',
     });
+
+
+
 
 
     SnackBar successSnackBar =
@@ -182,7 +213,6 @@ class _friendshipRequestsState extends State<friendshipRequests> {
             title: const Text(title, style: TextStyle(fontWeight: FontWeight.bold),),
             leading: IconButton(icon: Icon(Icons.arrow_back),
               onPressed: ()=>Navigator.pop(context, false),),
-            backgroundColor: Colors.deepOrangeAccent,
           ),
           body: StreamBuilder<QuerySnapshot>(
             stream: db.collection('followRequest').snapshots(),
@@ -250,7 +280,8 @@ class _friendshipRequestsState extends State<friendshipRequests> {
                                         ),
                                         child: Text('X', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white,),),
                                         onPressed: () {
-                                          acceptfollow(doc.id, '', 0);
+                                          print("aaaaaaaaaaaaaaaa ${doc.id}");
+                                          acceptfollow(doc.id, doc['senderMail'], 0);
                                         }
                                     ),
                                   ),
@@ -390,4 +421,5 @@ class _friendshipRequestsState extends State<friendshipRequests> {
       ),
     );
   }*/
+
 }
