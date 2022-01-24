@@ -12,25 +12,23 @@ class WalkThrough extends StatefulWidget {
 class _WalkThroughState extends State<WalkThrough> {
 
   int currentPage = 0;
-  int lastPage = 5;
-  List<String> title = ['WELCOME','PROFILE','SHARE MOMENTS','PET MEETINGS','USE FORUM','LET\'S BEGIN'];
-  List<String> heading = ['App Name','Create your pet account','Share your pet\'s best moments','Plan pet gatherings','Interact with other pet owners via forums','Let\'s get it started'];
+  int lastPage = 4;
+  List<String> title = ['WELCOME','PROFILE','SHARE MOMENTS','USE FORUM','LET\'S BEGIN'];
+  List<String> heading = ['RASPIE','Create your pet account','Share your pet\'s best moments','Interact with other pet owners via forums','Let\'s get it started'];
   List<String> images = [
-    'https://cdn.pixabay.com/photo/2016/02/19/15/46/labrador-retriever-1210559_960_720.jpg',
-    'https://www.apple.com/v/app-store/b/images/overview/icon_appstore__ev0z770zyxoy_large_2x.png',
+    'https://cdn.pixabay.com/photo/2020/03/16/16/10/fox-4937513_960_720.png',
+    'https://cdn.pixabay.com/photo/2021/03/02/19/34/border-collie-6063639_960_720.png',
     'https://cdn.pixabay.com/photo/2013/10/19/03/01/dog-197719_960_720.jpg',
-    'https://www.purina.co.uk/sites/default/files/2020-12/Playing%20with%20your%20dog1.jpg',
     'https://www.hiveage.com/blog/wp-content/uploads/2015/06/reputation-management-small-business.jpg',
     'https://listelist.com/wp-content/uploads/2017/05/heyecanlanan_kopek-620x375.jpg'];
   List<String> captions = ['',
     'Create an account for your dog upload her best profile photo and give her a nickname',
     'Share best moments of your pet',
-    'Schedule pet meetings with friends of your pet at any location you want',
     'Use pet forum to interact with lots of pet owners. Ask them anything!',
     'Shall we begin?'];
 
   void nextPage() {
-    if(currentPage < lastPage && currentPage != 7) {
+    if(currentPage < lastPage && currentPage != 6) {
       setState(() {
         currentPage += 1;
       });

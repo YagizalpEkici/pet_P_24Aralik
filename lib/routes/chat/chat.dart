@@ -57,7 +57,7 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.deepOrangeAccent,
       ),
         body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),

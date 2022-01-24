@@ -29,7 +29,7 @@ class NavigationDrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Material(
-        color: Colors.blue,
+        color: Colors.brown[200],
         child: ListView(
           padding: padding,
           children: [

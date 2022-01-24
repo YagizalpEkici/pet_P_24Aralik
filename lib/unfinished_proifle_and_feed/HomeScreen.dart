@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pet_project/firestore_related/notifClass.dart';
+import 'package:pet_project/firestore_related/reportclass.dart';
 import 'package:pet_project/firestore_related/users.dart';
 import 'package:pet_project/firestore_related/posts.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/mainfeedpost.dart';
@@ -22,9 +24,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pet_project/routes/createPetProfile.dart';
 import 'package:pet_project/routes/homePage.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/mainfeedpost.dart';
+import 'package:uuid/uuid.dart';
 
 import 'navigation_drawer_widget.dart';
 
+var uuid = Uuid();
 
 
 class HomeScreen extends StatefulWidget {
@@ -77,6 +81,22 @@ class _HomeScreenState extends State<HomeScreen> {
   List<dynamic> updateLike = [];
 
   String page = "home";
+  String id = uuid.v4();
+
+  Future<void> addNotif(notifClass notif) async {
+    final CollectionReference notifs = FirebaseFirestore.instance.collection('notification');
+    //var post_ref = posts.doc();
+    try {
+      //
+      await notifs.doc(notif.pid).set(notif.toJson());
+      print("null olmadi");
+      //.then((value) => print("User Added"))
+      //.catchError((error) => print("Failed to add user: $error"));
+    } catch (e) {
+      print("null oldu");
+      return null;
+    }
+  }
 
 
   void _loadUserInfo() async {
@@ -251,13 +271,13 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         drawer: NavigationDrawerWidget(),
         appBar: AppBar(
-          title: Text('Pet Project'),
+          title: Text('Raspie'),
 
           //leading: GestureDetector(
-            //onTap: (){
-              //NavigationDrawerWidget();
-            //},
-            //child: Icon(Icons.menu),
+          //onTap: (){
+          //NavigationDrawerWidget();
+          //},
+          //child: Icon(Icons.menu),
 
           backgroundColor: Colors.deepOrangeAccent,
           centerTitle: true,
@@ -372,6 +392,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                         icon: Icon(Icons.thumb_up),
                                         onPressed: () {
                                           if (!doc.get('likes').contains(currentUser!.email)) {
+                                            notifClass newnotif = notifClass(
+                                              Photoid: "",
+                                              userName: "",
+                                              type : "like",
+                                              userMail: doc['email'],
+                                              senderMail: email,
+                                              postID: "",
+                                              pid: id,
+                                              sendername: username,
+                                              addedMail: doc['email'] + email,
+
+                                            );
+                                            addNotif(newnotif);
+
+
                                             updateForumData(doc.get('pid'),
                                                 currentUser!.email, updateLike);
                                           }
@@ -401,48 +436,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                         label: const Text(''),
                                       ),
 
-                                      //deleteIfPostYours(currentUser!.email, doc.get('email'),doc.get('pid')),
-                                      ElevatedButton.icon(
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(14),
+                                      IconButton(onPressed: () => showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) => AlertDialog(
+                                          title: const Text('Report Post'),
+                                          content: const Text('You are about to report this post, are you sure? Contact us for further inquiry.'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () async {
+                                                final CollectionReference reports = FirebaseFirestore.instance.collection('reports');
+                                                reportclass newreport = reportclass(
+                                                    pid: id,
+                                                    reportedMail: email,
+                                                    postid: doc.id
+                                                );
+                                                //
+                                                await reports.doc(newreport.pid).set(newreport.toJson());
+                                                print("null olmadı");
+                                                Navigator.pop(context, 'Yes');
+                                              },
+                                              child: const Text('Yes'),
                                             ),
-                                          ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context, 'No');
+                                              },
+                                              child: const Text('No'),
+                                            ),
+                                          ],
                                         ),
-                                        icon: Icon(
-                                          Icons.report,
-                                        ),
-                                        onPressed: () async {
-                                          if(currentUser!.email == doc.get('email'))
-                                          {
-                                            List<dynamic> updatedPosts=[];
-
-                                            FirebaseAuth _auth;
-                                            User? _user;
-                                            _auth = FirebaseAuth.instance;
-                                            _user = _auth.currentUser;
-
-                                            var dbUserGetter = await FirebaseFirestore.instance.collection('user').where('email', isEqualTo: currentUser!.email).get();
-                                            updatedPosts = dbUserGetter.docs[0]['posts'];
-
-                                            updatedPosts.remove(doc.get('pid'));
-                                            FirebaseFirestore.instance
-                                                .collection('user')
-                                                .doc(_user?.email)
-                                                .update({
-                                              "posts": updatedPosts,
-                                            });
-
-                                            FirebaseFirestore.instance.collection('posts').doc(doc.get('pid')).delete();
-                                          }
-                                          else {
-                                            _showMyDialog();
-                                          }
-                                          // Perform some action
-                                        },
-                                        label: const Text(''),
+                                      ),
+                                        icon: Icon(Icons.report),
                                       ),
 
                                       ElevatedButton.icon(
@@ -586,7 +610,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Icons.delete_forever,
                                         ),
                                         onPressed: () async {
+                                          if(currentUser!.email == doc.get('email'))
+                                          {
+                                            List<dynamic> updatedPosts=[];
 
+                                            FirebaseAuth _auth;
+                                            User? _user;
+                                            _auth = FirebaseAuth.instance;
+                                            _user = _auth.currentUser;
+
+                                            var dbUserGetter = await FirebaseFirestore.instance.collection('user').where('email', isEqualTo: currentUser!.email).get();
+                                            updatedPosts = dbUserGetter.docs[0]['posts'];
+
+                                            updatedPosts.remove(doc.get('pid'));
+                                            FirebaseFirestore.instance
+                                                .collection('user')
+                                                .doc(_user?.email)
+                                                .update({
+                                              "posts": updatedPosts,
+                                            });
+
+                                            FirebaseFirestore.instance.collection('posts').doc(doc.get('pid')).delete();
+                                          }
+                                          else {
+                                            _showMyDialog();
+                                          }
                                           // Perform some action
                                         },
                                         label: const Text(''),

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/firestore_related/followClass.dart';
+import 'package:pet_project/firestore_related/followStatusClass.dart';
 import 'package:pet_project/firestore_related/notifClass.dart';
 import 'package:pet_project/firestore_related/reportclass.dart';
 import 'package:pet_project/firestore_related/users.dart';
@@ -14,6 +15,10 @@ import 'package:pet_project/firestore_related/posts.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/navigation_drawer_widget.dart';
 import 'package:uuid/uuid.dart';
 var uuid = Uuid();
+bool followButtonInitial = true;
+bool pending = false;
+bool followAccepted = false;
+bool unfollow = false;
 
 class privateOtherProfile extends StatefulWidget {
   const privateOtherProfile({Key? key}) : super(key: key);
@@ -61,6 +66,36 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
   user? currentUser;
   Post? currentPost;
 
+  String statusUserMail = "";
+  String statusSenderMail  = "";
+
+
+  void _loadStatusInfo(BuildContext context, String uniuser, String? unisender) async {
+    String temp = uniuser + unisender!;
+    var x = await FirebaseFirestore.instance
+        .collection('followStatus')
+        .where('addedMail', isEqualTo: temp)
+        .get();
+    if(x.size >= 0){
+      setState(() {
+        print("buldu status u");
+        statusSenderMail = x.docs[0]['senderMail'];
+        statusUserMail = x.docs[0]['userMail'];
+        pending = x.docs[0]['pending'];
+        followAccepted = x.docs[0]['followAccepted'];
+        followButtonInitial = x.docs[0]['followButtonInitial'];
+        unfollow = x.docs[0]['unfollow'];
+      });
+    }
+    else{
+      followButtonInitial = true;
+      pending = false;
+      followAccepted = false;
+      unfollow = false;
+    }
+  }
+
+
 
   void _loadUserInfo(BuildContext context) async {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
@@ -94,6 +129,22 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
   }
   bool feedLoading = true;
   int postsSize = 0;
+
+  Future<void> addFollowStatus(followStatusClass status) async {
+    final CollectionReference stats = FirebaseFirestore.instance.collection('followStatus');
+    //var post_ref = posts.doc();
+    try {
+      //
+      await stats.doc(status.pid).set(status.toJson());
+      print("null olmadı");
+      //.then((value) => print("User Added"))
+      //.catchError((error) => print("Failed to add user: $error"));
+    } catch (e) {
+      print("null oldu");
+      return null;
+    }
+  }
+
 
   void _loadUserProf() async {
 
@@ -216,25 +267,24 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
     //try {
     reportclass newreport = reportclass(
         pid: id,
-        reportedMail: reportedMail
+        reportedMail: reportedMail, postid: 'userReported'
     );
     //
     await reports.doc(newreport.pid).set(newreport.toJson());
     print("null olmadı");
-    //.then((value) => print("User Added"))
-    //.catchError((error) => print("Failed to add user: $error"));
-    //} catch (e) {
-    //print("null oldu");
-    //return null;
-    //}
+
   }
 
 
   @override
   void initState() {
     super.initState();
-    //_loadUserInfo();
-    //_loadUserProf();
+    followButtonInitial = true;
+    pending = false;
+    followAccepted = false;
+    unfollow = false;
+    followButton();
+
   }
 
   @override
@@ -244,6 +294,9 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
         .settings
         .arguments as Map;
     _loadUserInfo(context);
+
+    _loadStatusInfo(context, email, FirebaseAuth.instance.currentUser!.email.toString());
+
 
     currentUser = user(
       username: username,
@@ -293,7 +346,7 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
                     final CollectionReference reports = FirebaseFirestore.instance.collection('reports');
                     reportclass newreport = reportclass(
                         pid: id,
-                        reportedMail: 'a'
+                        reportedMail: args['email'], postid: 'userReported'
                     );
                     //
                     await reports.doc(newreport.pid).set(newreport.toJson());
@@ -501,20 +554,23 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 //SizedBox(width: 17,),
-                ElevatedButton(onPressed: () {},
+                ElevatedButton(onPressed: () {
+                  Navigator.pushNamed(context, '/chat');
+                },
                   child: Text('Message'),),
 
                 SizedBox(width: 0,),
                 ElevatedButton(
-                  onPressed: () {
-                    /*
-            }
+                  onPressed: () async {
 
+                    id = uuid.v4();
+                    if(followButtonInitial){
                       followClass newfollow = followClass(
                           senderMail: args['email2'],
                           senderusername: args['username2'],
                           userMail: email,
-                          pid: id
+                          pid: id,
+                          addedMail: email + args['email2']
                       );
                       notifClass newnotif = notifClass(
                           Photoid: '',
@@ -523,14 +579,128 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
                           userMail: email,
                           senderMail: args['email2'],
                           pid: id,
-                          sendername: args['username2']);
+                          sendername: args['username2'],
+                          addedMail: email + args['email2']
+                      );
 
+                      followStatusClass newstatus = followStatusClass(
+                          senderMail: args['email2'],
+                          userMail: email,
+                          addedMail: email + args['email2'],
+                          pid: id,
+                          pending: true,
+                          followAccepted: false,
+                          followButtonInitial: false,
+                          unfollow: false);
                       addFollow(newfollow);
                       addNotif(newnotif);
-                      */
+                      addFollowStatus(newstatus);
+                      setState(() {
+                        pending = true;
+                        followButtonInitial = false;
+                        followAccepted = false;
+                        unfollow = false;
+                        _loadStatusInfo(context, email, FirebaseAuth.instance.currentUser!.email.toString());
+                      });
+                    }
+                    else if(pending){
+                      //destroy follow status, follow request
+                      String statusId = "";
+                      var dbstatusGetter = await FirebaseFirestore.instance.collection('followStatus').where('addedMail', isEqualTo: email + args['email2']).get();
+                      dbstatusGetter.docs.forEach((doc) => {
+                        statusId = doc.id
+                      });
+
+                      FirebaseFirestore.instance
+                          .collection('followStatus')
+                          .doc(statusId)
+                          .delete();
+                      FirebaseFirestore.instance
+                          .collection('notification')
+                          .doc(statusId)
+                          .delete();
+
+                      FirebaseFirestore.instance
+                          .collection('followRequest')
+                          .doc(statusId)
+                          .delete();
+
+                      setState(() {
+                        pending = false;
+                        followButtonInitial = true;
+                        followAccepted = false;
+                        unfollow = false;
+                        _loadStatusInfo(context, email, FirebaseAuth.instance.currentUser!.email.toString());
+                      });
+                    }
+
+                    else if(followAccepted){
+                      //destroy follow status, notif, follow request
+                      //else
+                      String statusId = "";
+                      var dbstatusGetter = await FirebaseFirestore.instance.collection('followStatus').where('addedMail', isEqualTo: email + args['email2']).get();
+                      dbstatusGetter.docs.forEach((doc) => {
+                        statusId = doc.id
+                      });
+                      FirebaseFirestore.instance
+                          .collection('followStatus')
+                          .doc(statusId)
+                          .update({
+                        "addedMail": 'AAAAAAAAAAAAAAAAAAAAA',
+                        "pending": false,
+                        "followButtonInitial": true,
+                        "unfollow": false,
+                        "followAccepted": false
+                      });
+                      List<dynamic> updatedUserfollower = [];
+                      List<dynamic> updatedSenderfollowing = [];
+
+                      var dbUsergetter = await FirebaseFirestore.instance
+                          .collection('user')
+                          .where('email', isEqualTo: email)
+                          .get();
+                      var dbSendergetter = await FirebaseFirestore.instance
+                          .collection('user')
+                          .where('email', isEqualTo: FirebaseAuth.instance.currentUser!.email)
+                          .get();
+                      updatedSenderfollowing = dbSendergetter.docs[0]['following'];
+                      updatedUserfollower = dbUsergetter.docs[0]['followers'];
+
+                      updatedUserfollower.remove(FirebaseAuth.instance.currentUser!.email);
+                      updatedSenderfollowing.remove(email);
+
+                      FirebaseFirestore.instance
+                          .collection('user')
+                          .doc(email)
+                          .update({
+                        "followers": updatedUserfollower
+                      });
+                      FirebaseFirestore.instance
+                          .collection('user')
+                          .doc(FirebaseAuth.instance.currentUser!.email)
+                          .update({
+                        "following": updatedSenderfollowing
+                      });
+
+                      setState(() {
+                        followButtonInitial = true;
+                        pending = false;
+                        followAccepted = false;
+                        unfollow = false;
+                        _loadStatusInfo(context, email, FirebaseAuth.instance.currentUser!.email.toString());
+                      });
+
+
+                    }else{
+                      //destroy follow status, notif, follow request
+                      setState(() {
+                        _loadStatusInfo(context, email, FirebaseAuth.instance.currentUser!.email.toString());
+                      });
+                    }
+
 
                   },
-                  child: Text('follow'),)
+                  child: followButton(),)
               ],
             ),
             Padding(
@@ -641,5 +811,21 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
       ),
     );
   }
+
+  Widget followButton(){
+    if(followButtonInitial == true){
+      return Text('follow');
+    }
+    else if(pending == true){
+      return Text('pending');
+    }
+    else if(followAccepted == true){
+      return Text('unfollow');
+    }
+    else{
+      return Text('follow');
+    }
+  }
+
 
 }
