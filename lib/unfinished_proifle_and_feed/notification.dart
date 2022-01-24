@@ -91,7 +91,8 @@ class _notifications extends State<notifications> {
               senderMail: doc['senderMail'],
               postID: doc['postID'],
               pid: "",
-              sendername: doc['sendername']
+              sendername: doc['sendername'],
+              addedMail: doc['userMail'] + doc['senderMail']
           )
       )
     });
@@ -142,7 +143,6 @@ class _notifications extends State<notifications> {
             title: const Text(title, style: TextStyle(fontWeight: FontWeight.bold),),
             leading: IconButton(icon: Icon(Icons.arrow_back),
               onPressed: ()=>Navigator.pop(context, false),),
-            backgroundColor: Colors.deepOrangeAccent,
           ),
           body: StreamBuilder<QuerySnapshot>(
             stream: db.collection('notification').snapshots(),

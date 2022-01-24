@@ -7,9 +7,10 @@ class notifClass {
   late String postID;
   late String pid;
   late String sendername;
+  late String addedMail;
 
 
-  notifClass({required this.sendername, required this.Photoid, required this.userName, required this.type, required this.userMail, required this.senderMail, this.postID = "", required this.pid});
+  notifClass({required this.addedMail, required this.sendername, required this.Photoid, required this.userName, required this.type, required this.userMail, required this.senderMail, this.postID = "", required this.pid});
 
   Map<String, dynamic> toJson() {
     return {
@@ -22,6 +23,7 @@ class notifClass {
       'senderMail': senderMail,
       'postID': postID,
       'sendername': sendername,
+      'addedMail': addedMail,
     };
   }
 
