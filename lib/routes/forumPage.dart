@@ -220,7 +220,7 @@ class _forumPageState extends State<forumPage> {
       appBar: AppBar(
 
         title: Text(
-          'FORUMs',
+          'Forum',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,

@@ -320,7 +320,7 @@ class _profilePageState extends State<profilePage> {
                                 padding: const EdgeInsets.all(0),
                                 child: CircleAvatar(
                                   radius: 70,
-                                  backgroundImage: NetworkImage('https://cdn-1.motorsport.com/images/amp/YpN8nVN0/s1000/sergio-perez-red-bull-racing-1.jpg'),
+                                  backgroundImage: NetworkImage('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
                                 ),
                               ),
                             ),

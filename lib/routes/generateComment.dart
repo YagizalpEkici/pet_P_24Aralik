@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_project/firestore_related/comments.dart';
+import 'package:pet_project/firestore_related/notifClass.dart';
 
 import 'package:pet_project/firestore_related/users.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/HomeScreen.dart';
@@ -55,6 +56,22 @@ class _generateCommentState extends State<generateComment> {
   String content = "";
 
   user? currentUser;
+
+  Future<void> addNotif(notifClass notif) async {
+    final CollectionReference notifs = FirebaseFirestore.instance.collection('notification');
+    //var post_ref = posts.doc();
+    try {
+      //
+      await notifs.doc(notif.pid).set(notif.toJson());
+      print("null olmadı");
+      //.then((value) => print("User Added"))
+      //.catchError((error) => print("Failed to add user: $error"));
+    } catch (e) {
+      print("null oldu");
+      return null;
+    }
+  }
+
 
   void pageDirection() {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
@@ -122,17 +139,36 @@ class _generateCommentState extends State<generateComment> {
     print(pid);
     print('ssdsdsdsdsds');
 
+
+
+
     List<dynamic>  currentlikeArray = [];
+    String postOwnerEmail = "";
+
+
     var x = await FirebaseFirestore.instance
         .collection('posts')
         .where('pid', isEqualTo: pid)
         .get();
     setState(() {
       currentlikeArray = x.docs[0]['comments'];
+      postOwnerEmail = x.docs[0]['email'];
+
       updatecomment = currentlikeArray;
 
     });
 
+    notifClass newnotif = notifClass(
+        Photoid: '',
+        userName: '',
+        type: 'comment',
+        userMail: postOwnerEmail,
+        senderMail: email,
+        pid: id,
+        sendername: username,
+        addedMail: postOwnerEmail + email
+    );
+    addNotif(newnotif);
     updatecomment.add(cid);
 
     FirebaseFirestore.instance

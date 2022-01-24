@@ -42,16 +42,17 @@ class _homePageState extends State<homePage> {
       body: screens[currentIndex],
 
       bottomNavigationBar: BottomNavigationBar(items: const < BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.home), label:'mainFeed'),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label:'home'),
         BottomNavigationBarItem(icon: Icon(Icons.search), label:'search'),
-        BottomNavigationBarItem(icon: Icon(Icons.meeting_room), label:'forum'),
+        BottomNavigationBarItem(icon: Icon(Icons.people_rounded), label:'forum'),
         //BottomNavigationBarItem(icon: Icon(Icons.pending_actions), label:'form'),
-        BottomNavigationBarItem(icon: Icon(Icons.accessibility), label:'profile'),
+        BottomNavigationBarItem(icon: Icon(Icons.pets_outlined), label:'profile'),
 
       ],
           currentIndex: currentIndex,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.red,
+          selectedItemColor: Colors.deepOrangeAccent,
+
+          unselectedItemColor: Colors.orange,
           onTap: onTapped
       ),
     );

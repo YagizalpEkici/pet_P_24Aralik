@@ -201,9 +201,9 @@ class _loginState extends State<login> {
                           child: CircleAvatar(
                             child: ClipOval(
                               child:
-                              Image.network('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'),
+                              Image.network('https://cdn.pixabay.com/photo/2020/03/16/16/10/fox-4937513_960_720.png'),
                             ),
-                            radius: 60,
+                            radius: 80,
                           ),)
                       ],
                     ),
