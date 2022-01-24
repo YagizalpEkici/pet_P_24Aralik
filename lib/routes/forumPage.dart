@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_project/firestore_related/users.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/post.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/profilePage.dart';
-import 'package:pet_project/utils/colors.dart';
+
 import 'package:pet_project/utils/dimensions.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/post_tile.dart';
 import 'package:pet_project/routes/generateForum.dart';

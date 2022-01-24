@@ -496,7 +496,6 @@ class _publicotherprofilePageState extends State<publicotherprofilePage> {
                       onPressed: () {
                         /*
             }
-
                       followClass newfollow = followClass(
                           senderMail: args['email2'],
                           senderusername: args['username2'],

@@ -205,7 +205,6 @@ class _profilePageState extends State<profilePage> {
       breed: breed,
     );
 
-
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(

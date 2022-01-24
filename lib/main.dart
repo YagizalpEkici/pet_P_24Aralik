@@ -195,7 +195,6 @@ class _MyFirebaseAppState extends State<MyFirebaseApp> {
         '/chat': (context) => Chat(),
 
 
-
       },
     )
     );

@@ -9,7 +9,7 @@ import 'package:pet_project/firestore_related/notifClass.dart';
 import 'package:pet_project/firestore_related/reportclass.dart';
 import 'package:pet_project/firestore_related/users.dart';
 import 'package:pet_project/firestore_related/posts.dart';
-import 'package:flutter/material.dart';
+
 import 'package:pet_project/unfinished_proifle_and_feed/followerListPage.dart';
 import 'package:pet_project/unfinished_proifle_and_feed/followingListPage.dart';
 

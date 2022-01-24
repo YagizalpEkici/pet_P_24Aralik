@@ -264,7 +264,6 @@ class _privateOtherProfileState extends State<privateOtherProfile> {
 
     );
 
-
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(

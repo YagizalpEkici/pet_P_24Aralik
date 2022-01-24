@@ -227,7 +227,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _loadUserProf();
   }
-
   @override
   Widget build(BuildContext context) {
     _loadUserInfo();
